@@ -14,8 +14,8 @@ Tokens
 	plus = '+';
 	minus_eq = '-=';
 	minus = '-';
-	mult = '*';
 	dmult = '**';
+	mult = '*';
 	div_eq = '/=';
 	div = '/';
 	mod = '%';
@@ -55,13 +55,14 @@ Tokens
 	true = 'true';
 	semi = ':';
 	false = 'false';
-	quote = '"';
 	blank = (' ' | lf | cr);
 	line_comment = '#' not_eol* eol; 
 	number = digit+ | (digit+ '.' digit+);
 	id = letter (letter | digit)*;
 	string = '"'not_eol* '"' | ;
 	string_single_quote = '''not_eol* ''' | ;
+	quote = '"';
+	single_quote = ''';
 	sep = '.';
 
 Ignored Tokens
@@ -69,16 +70,74 @@ Ignored Tokens
 	
 Productions
 	// να δούμε προτεραιότητες πχ len([1, 2, 3])
+	goal = goal_helper*;
+	goal_helper = {func} function | {stmt} statement;
+
+	function = def id l_par argument? r_par semi statement;
+
+	argument = id assignment?;
+
+	assignment = eq value;
 
 	// not finished
 	statement = {condition} tab* if comparison semi statement |
 				{loop_while} tab* while comparison semi statement |
 				{loop_for} tab* for [id1]:id in [id2]:id semi statement |
 				{return} tab* return expression |
-				{print} tab* print not_first_arg*;
+				{print} tab* print expression not_first_arg* |
+				{assign_eq} tab* id eq expression |
+				{assign_mineq} tab* id minus_eq expression |
+				{assign_diveq} tab* id div_eq expression |
+				{array} tab* id l_br [ex1]:expression r_br eq [ex2]:expression |
+				{assert} tab* id expression not_first_arg? |
+				{func_call} tab* func_call;
+	
+	//TODO
+	expression = {second_level}second_level |
+				{array} l_br expression not_first_expression* r_br;
+				/*{multiplication} [exp1]:expression mult [exp2]:expression |
+				{division} [exp1]:expression div [exp2]:expression |
+				{mod} [exp1]:expression mod [exp2]:expression |
+				{plus} [exp1]:expression plus [exp2]:expression |
+				{minus} [exp1]:expression minus [exp2]:expression */
+
+	/*expression = {multiplication} multiplication |
+					{addition} expression plus multiplication|
+					{subtraction} expression minus multiplication;
+					
+	multiplication = {something} something | 
+						  {multiplication} multiplication mult something;
+	
+
+	something ={identifier}id|
+				  {numb}number|
+				  {par} l_par expression r_par;*/
+
+	second_level = {something} first_level |
+
+			{power} second_level dmult first_level;
+	//max_rule = max l_par value not_first_value* r_par;
+
+	first_level = {val} value |
+				{identifier} id |
+				{function} func |
+				{subscription} id l_br expression r_br;
+
+	func = {max} max l_par value not_first_value* r_par |
+			{min} min l_par value not_first_value* r_par |
+			{len} len l_par expression r_par |
+			{function} func_call;
+
+	not_first_value = comma value;
+
+	not_first_expression = comma expression;
 
 	import_rule = {without_from} import module import_alias? not_first_import_module* |
 				{with_from} from module import id import_alias? not_first_import_id*;
+
+	module = module_caller* id;
+
+	module_caller = id sep;
 
 	not_first_import_module = comma module import_alias?;
 
@@ -86,22 +145,26 @@ Productions
 
 	import_alias = as id;
 
-	module = module_caller* id;
+	func_call = id l_par arglist? r_par;
 
-	module_caller = id sep;
+	arglist = expression not_first_arg*;
+
+	not_first_arg = comma expression;
 
 	comparison_wrapper = {or_comp}[c1]:comparison or [c2]:comparison |
 						{and_comp}[c1]:comparison and [c2]:comparison;
 
-	comparison = {true} true |
-				{false} false |
-				{not_c} not comparison |
-				{great} [exp1]:expression great [exp2]:expression |
+	comparison ={great} [exp1]:expression great [exp2]:expression |
 				{less} [exp1]:expression less [exp2]:expression |
 				{great_eq} [exp1]:expression great_eq [exp2]:expression |
 				{less_eq} [exp1]:expression less_eq [exp2]:expression |
 				{not_eq} [exp1]:expression not_eq [exp2]:expression |	
-				{comp_eq} [exp1]:expression comp_eq [exp2]:expression;
+				{comp_eq} [exp1]:expression comp_eq [exp2]:expression |
+				{true} true |
+				{false} false |
+				{not_c} not comparison;
+
+	
 
 	value = {f_call} id sep func_call |
 			{num} number |
@@ -109,25 +172,15 @@ Productions
 			{string_single_quote} string_single_quote |
 			{none} none;
 	
-	func_call = id l_par arglist? r_par;
 
-	arglist = expression not_first_arg*;
 
-	not_first_arg = comma expression;
-
-	//TODO
-	expression = number;
+	
 
 	/*programme = commands*;
 	
 	commands ={stat} statement|
 				 {expr}expression;
 	
-	function = def id l_par argument? r_par semi statement;
-
-	argument = id assignment?;
-
-	assignment = eq value;
 	
 	statement ={if}tab* if  comparison semi statement |
 				  {assign}tab* id eq expression |

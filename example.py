@@ -1,10 +1,19 @@
-#! /usr/bin/env python
-#A miniPython example
+# def test(sth=8): 
+# 	print 4
+print max(x.fr(test))
+print max(x.t(), 2)
+print 7 ** t()
 
-#! /usr/bin/env python
-#A miniPython example
 
-if x <3+2:
-	print 3+2*3*4
+fr()
+ 
+print [4**5,5,2]
+print len([4**5,5,2])
+print len(6**6)
 
-	'natalia'
+# fr(8)
+# fr(5634)
+
+# x = 23 ** rgi
+
+# fr(7)
