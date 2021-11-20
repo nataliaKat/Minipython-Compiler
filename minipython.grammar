@@ -69,7 +69,6 @@ Ignored Tokens
 	blank, line_comment;
 	
 Productions
-	// να δούμε προτεραιότητες πχ len([1, 2, 3])
 	goal = goal_helper*;
 	goal_helper = {func} function | {stmt} statement;
 
@@ -79,7 +78,6 @@ Productions
 
 	assignment = eq value;
 
-	// not finished
 	statement = {condition} tab* if comparison semi statement |
 				{loop_while} tab* while comparison semi statement |
 				{loop_for} tab* for [id1]:id in [id2]:id semi statement |
@@ -89,44 +87,30 @@ Productions
 				{assign_mineq} tab* id minus_eq expression |
 				{assign_diveq} tab* id div_eq expression |
 				{array} tab* id l_br [ex1]:expression r_br eq [ex2]:expression |
-				{assert} tab* id expression not_first_arg? |
-				{func_call} tab* func_call;
+				{assert} tab* assert expression not_first_arg? |
+				{func_call} tab* func_call |
+				{import} import_rule;
 	
-	//TODO
-	expression = {second_level}second_level |
-				{array} l_br expression not_first_expression* r_br;
-				/*{multiplication} [exp1]:expression mult [exp2]:expression |
-				{division} [exp1]:expression div [exp2]:expression |
-				{mod} [exp1]:expression mod [exp2]:expression |
-				{plus} [exp1]:expression plus [exp2]:expression |
-				{minus} [exp1]:expression minus [exp2]:expression */
-
-	/*expression = {multiplication} multiplication |
-					{addition} expression plus multiplication|
-					{subtraction} expression minus multiplication;
-					
-	multiplication = {something} something | 
-						  {multiplication} multiplication mult something;
+	expression = {mult} multiplication |
+				{plus} expression plus multiplication |
+				{minus} expression minus multiplication;
 	
+	multiplication = {power} power | 
+					{multiplication} multiplication mult power |
+					{division} multiplication div power |
+					{mod} multiplication mod power;
 
-	something ={identifier}id|
-				  {numb}number|
-				  {par} l_par expression r_par;*/
-
-	second_level = {something} first_level |
-
-			{power} second_level dmult first_level;
-	//max_rule = max l_par value not_first_value* r_par;
+	power = {something} first_level |
+			{power} power dmult first_level;
 
 	first_level = {val} value |
 				{identifier} id |
-				{function} func |
-				{subscription} id l_br expression r_br;
-
-	func = {max} max l_par value not_first_value* r_par |
-			{min} min l_par value not_first_value* r_par |
-			{len} len l_par expression r_par |
-			{function} func_call;
+				{max} max l_par value not_first_value* r_par |
+				{min} min l_par value not_first_value* r_par |
+				{len} len l_par expression r_par |
+				{function} func_call |
+				{subscription} id l_br expression r_br |
+				{array} l_br expression not_first_expression* r_br;
 
 	not_first_value = comma value;
 
@@ -164,99 +148,9 @@ Productions
 				{false} false |
 				{not_c} not comparison;
 
-	
-
 	value = {f_call} id sep func_call |
 			{num} number |
 			{string} string |
 			{string_single_quote} string_single_quote |
 			{none} none;
-	
-
-
-	
-
-	/*programme = commands*;
-	
-	commands ={stat} statement|
-				 {expr}expression;
-	
-	
-	statement ={if}tab* if  comparison semi statement |
-				  {assign}tab* id eq expression |
-				  {print}tab* print expression;
-
-*/
-	/*comparison = {true} true|
-					 {false} false|
-					 {lessc} [lpar]:expression less [rpar]:expression|
-					 {greatc}[lpar]:expression great [rpar]:expression;
-	
-
-	expression = {multiplication} multiplication |
-					{addition} expression plus multiplication|
-					{subtraction} expression minus multiplication;
-					
-	multiplication = {something} something | 
-						  {multiplication} multiplication mult something;
-	
-
-	something ={identifier}id|
-				  {numb}number|
-				  {par} l_par expression r_par;
-	
-	value = id sep function_call;
-
-	function_call = i;
-
-	value = {fun_call} id sep function_call |
-			{num} number |
-			{double_quotes} quote;
-
-	arglist = expression;
-
-
-*/
-
-	/* REDEFINITION ERROR - idio onoma enallaktikwn -> {greatc}
-	*comparison = {true} true|
-	*				 {false} false|
-	*				 {greatc} [lpar]:expression less [rpar]:expression|
-	*				 {greatc}[lpar]:expression great [rpar]:expression;
-	*/
-
-	/*
-	  SHIFT/REDUCE conflict 
-		expression = {multiplication} multiplication |
-					{addition} [e1]:expression plus [e2]:expression|
-					{subtraction} expression minus multiplication;
-*/
-
-	/*
-	* REDEFINITION ERROR - idio onoma kanona
-	* 	comparison ={if}tab* if  comparison semi statement |
-	*			  {assign}tab* id eq expression |
-	*			  {print}tab* print expression;
-	* 
-	*
-	*/
-
-
-	/*
-	* REDUCE/REDUCE conflict - dyo kanones idies enallaktikes 
-	* anagontai ston idio kanona-patera (pou einai o multiplication)
-	*
-	*multiplication = {something} something |
-	*				 {s1} something1 |
-	*				 {multiplication} multiplication mult something;
-	*
-	*something ={identifier}id|
-	*		 	  	   {numb}number|
-	*			       {par} l_par expression r_par;
-	*
-	*something1 ={identifier}id|
-	*		 	  	   {numb}number|
-	*			       {par} l_par expression r_par;
-	*
-	*/	
 	
