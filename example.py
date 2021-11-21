@@ -122,8 +122,5 @@ if y > 7 and not x > 8 or y <= 3:
     print 'something'
 
 if y > 7 or not x > 8 and y <= 3 and not false:
-print 1
-
-if y  > not true and y <= 3 and not false:
-    print 1
+print _id_
 

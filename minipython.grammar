@@ -1,3 +1,10 @@
+/* 
+* Davari Athina             8180020
+* Drosos Georgios-Petros    8180024
+* Katsiapi Natalia          8180040
+* Liargkovas Georgios       8180061
+*/
+
 Package minipython;
 
 Helpers
@@ -78,6 +85,7 @@ Productions
 
 	assignment = eq value;
 
+	// import has been added as an alternative
 	statement = {condition} tab* if comparison_or semi statement |
 				{loop_while} tab* while comparison_or semi statement |
 				{loop_for} tab* for [id1]:id in [id2]:id semi statement |
@@ -91,7 +99,8 @@ Productions
 				{func_call} tab* func_call |
 				{import} import_rule;
 	
-	/* If we try to convert BNF directly, we have shift/reduce conflicts. So, we 
+	/* 
+	* If we try to convert BNF directly, we have shift/reduce conflicts. So, we 
 	* constructed multiplication, power and first_level rules which gather different options with 
 	* same/similar priority to avoid this.
 	*/
@@ -148,8 +157,8 @@ Productions
 	comparison_and = {comparison} comparison |
 						{and_comp} comparison_and and comparison;
 
-	// not will always be of lower priority than other alternatives
-	comparison ={great} [exp1]:expression great [exp2]:expression |
+	// not_c will always be of lower priority than other alternatives
+	comparison = {great} [exp1]:expression great [exp2]:expression |
 				{less} [exp1]:expression less [exp2]:expression |
 				{great_eq} [exp1]:expression great_eq [exp2]:expression |
 				{less_eq} [exp1]:expression less_eq [exp2]:expression |
