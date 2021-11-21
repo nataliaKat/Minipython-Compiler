@@ -15,6 +15,8 @@ Helpers
 	all = [0..127]; 
 	eol = lf | cr | cr lf ;
 	not_eol = [all - [cr + lf]]; 
+	quote = '"';
+	single_quote = ''';
 
 Tokens
 	tab = 9;
@@ -65,11 +67,10 @@ Tokens
 	blank = (' ' | lf | cr);
 	line_comment = '#' not_eol* eol; 
 	number = digit+ | (digit+ '.' digit+);
+	// Identifiers can also start with and contain _
 	id = (letter | '_')(letter | digit | '_')*;
-	string = '"'not_eol* '"' | ;
-	string_single_quote = '''not_eol* ''' | ;
-	quote = '"';
-	single_quote = ''';
+	string_literal = quote [not_eol - quote]* quote | 
+					single_quote [not_eol - single_quote]* single_quote;
 	sep = '.';
 
 Ignored Tokens
@@ -170,7 +171,6 @@ Productions
 
 	value = {f_call} id sep func_call |
 			{num} number |
-			{string} string |
-			{string_single_quote} string_single_quote |
+			{string} string_literal |
 			{none} none;
 	

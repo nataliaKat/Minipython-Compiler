@@ -1,5 +1,3 @@
-# def test(sth=8): 
-# 	print 4
 print max(x.fr(test), 5)
 print max(x.t(), 2)
 print 7 ** t()
@@ -12,8 +10,6 @@ print len([4**5,5,2])
 print len(6**6)
 print something[2**7]
 print 8 ** max(3, 8)
-# fr(8)
-# fr(5634)
 
 print 563.93 / 2 * 3 ** 5
 
@@ -26,10 +22,10 @@ print 563.93 / testf(2 * 3, [y, x, w] ** q) ** 5
 testf(2* 3 ,[y, x, w] ** k)
 
 
-# print 563.93 / 2 * 3 ** 5
+print 563.93 / 2 * 3 ** 5
 
-# return 7 + 8 * 9
-# return 7 * 8 + 9
+return 7 + 8 * 9
+return 7 * 8 + 9
 
 
 print x
@@ -70,11 +66,6 @@ def a_function__(x):
     if x > 8:
         print 'hi'
 
-
-# x = 23 ** rgi
-
-# fr(7)
-
 # statement examples
 if true :
     return 2 / 5
@@ -102,9 +93,6 @@ while litresOfCoffee>0 :
 while 8 >= 9 :
     x = 78
 
-while true and not false:
-    endlessLoop("we are screwed")
-
 x -= 1 +1
 
 assert min(x.k(9))
@@ -124,3 +112,7 @@ if y > 7 and not x > 8 or y <= 3:
 if y > 7 or not x > 8 and y <= 3 and not false:
 print _id_
 
+print 'yuteT'
+
+while true and not false:
+    endlessLoop("we are screwed")
