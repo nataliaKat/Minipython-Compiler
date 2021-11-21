@@ -78,8 +78,8 @@ Productions
 
 	assignment = eq value;
 
-	statement = {condition} tab* if comparison semi statement |
-				{loop_while} tab* while comparison semi statement |
+	statement = {condition} tab* if comparison_wrapper semi statement |
+				{loop_while} tab* while comparison_wrapper semi statement |
 				{loop_for} tab* for [id1]:id in [id2]:id semi statement |
 				{return} tab* return expression |
 				{print} tab* print expression not_first_arg* |
@@ -135,7 +135,8 @@ Productions
 
 	not_first_arg = comma expression;
 
-	comparison_wrapper = {or_comp}[c1]:comparison or [c2]:comparison |
+	comparison_wrapper ={comparison} comparison |
+	                    {or_comp}[c1]:comparison or [c2]:comparison |
 						{and_comp}[c1]:comparison and [c2]:comparison;
 
 	comparison ={great} [exp1]:expression great [exp2]:expression |
