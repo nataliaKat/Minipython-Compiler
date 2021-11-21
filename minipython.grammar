@@ -67,7 +67,7 @@ Tokens
 	blank = (' ' | lf | cr);
 	line_comment = '#' not_eol* eol; 
 	number = digit+ | (digit+ '.' digit+);
-	// Identifiers can also start with and contain _
+	// Identifiers can also start with or contain underscope
 	id = (letter | '_')(letter | digit | '_')*;
 	string_literal = quote [not_eol - quote]* quote | 
 					single_quote [not_eol - single_quote]* single_quote;
