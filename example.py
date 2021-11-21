@@ -31,8 +31,44 @@ testf(2* 3 ,[y, x, w] ** k)
 return 7 + 8 * 9
 return 7 * 8 + 9
 
+
 print x
 
+while true and false:
+    print sth
+
+while x > 2 and y == 8:
+    return 1
+
+# import examples
+import library1
+import library.specific
+import library as l
+import library.specific as l
+import library.specific as x, anotherlibrary.other, other as l1, other1.math as m
+
+from y import x
+from  y import x as w
+from  y import x,b,n
+from  y import x,b as r532,n
+
+# function call examples
+test()
+test(x)
+test(x + 10)
+test(x8, y0, [3, 5, 7])
+test([1, 4, 5])
+test(x.test1(), y[n], b(v))
+test(len(test1()))
+test(max(7,9))
+
+# function examples
+def perfect_function():
+    print _v
+
+def a_function__(x):
+    if x > 8:
+        print 'hi'
 
 assert min(x.k(9))
 

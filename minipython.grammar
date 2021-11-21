@@ -58,7 +58,7 @@ Tokens
 	blank = (' ' | lf | cr);
 	line_comment = '#' not_eol* eol; 
 	number = digit+ | (digit+ '.' digit+);
-	id = letter (letter | digit)*;
+	id = (letter | '_')(letter | digit | '_')*;
 	string = '"'not_eol* '"' | ;
 	string_single_quote = '''not_eol* ''' | ;
 	quote = '"';
@@ -125,6 +125,7 @@ Productions
 
 	not_first_import_module = comma module import_alias?;
 
+	// Helper rule for more than one import identifiers
 	not_first_import_id = comma id import_alias?;
 
 	import_alias = as id;
@@ -133,6 +134,7 @@ Productions
 
 	arglist = expression not_first_arg*;
 
+	// Helper rule for more than one arguments in a function
 	not_first_arg = comma expression;
 
 	comparison_wrapper ={comparison} comparison |
