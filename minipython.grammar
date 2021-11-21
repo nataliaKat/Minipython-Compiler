@@ -78,19 +78,23 @@ Productions
 
 	assignment = eq value;
 
-	statement = {condition} tab* if comparison_wrapper semi statement |
-				{loop_while} tab* while comparison_wrapper semi statement |
+	statement = {condition} tab* if comparison_or semi statement |
+				{loop_while} tab* while comparison_or semi statement |
 				{loop_for} tab* for [id1]:id in [id2]:id semi statement |
 				{return} tab* return expression |
 				{print} tab* print expression not_first_arg* |
 				{assign_eq} tab* id eq expression |
 				{assign_mineq} tab* id minus_eq expression |
 				{assign_diveq} tab* id div_eq expression |
-				{array} tab* id l_br [ex1]:expression r_br eq [ex2]:expression |
+				{array_assign} tab* id l_br [ex1]:expression r_br eq [ex2]:expression |
 				{assert} tab* assert expression not_first_arg? |
 				{func_call} tab* func_call |
 				{import} import_rule;
 	
+	/* If we try to convert BNF directly, we have shift/reduce conflicts. So, we 
+	* constructed multiplication, power and first_level rules which gather different options with 
+	* same/similar priority to avoid this.
+	*/
 	expression = {mult} multiplication |
 				{plus} expression plus multiplication |
 				{minus} expression minus multiplication;
@@ -103,6 +107,7 @@ Productions
 	power = {something} first_level |
 			{power} power dmult first_level;
 
+	/* These alternatives have the highest priority */
 	first_level = {val} value |
 				{identifier} id |
 				{max} max l_par value not_first_value* r_par |
@@ -137,10 +142,13 @@ Productions
 	// Helper rule for more than one arguments in a function
 	not_first_arg = comma expression;
 
-	comparison_wrapper ={comparison} comparison |
-	                    {or_comp}[c1]:comparison or [c2]:comparison |
-						{and_comp}[c1]:comparison and [c2]:comparison;
+	comparison_or = {comp_and} comparison_and |
+					{or_comp} comparison_or or comparison_and;
 
+	comparison_and = {comparison} comparison |
+						{and_comp} comparison_and and comparison;
+
+	// not will always be of lower priority than other alternatives
 	comparison ={great} [exp1]:expression great [exp2]:expression |
 				{less} [exp1]:expression less [exp2]:expression |
 				{great_eq} [exp1]:expression great_eq [exp2]:expression |

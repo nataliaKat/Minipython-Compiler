@@ -28,8 +28,8 @@ testf(2* 3 ,[y, x, w] ** k)
 
 # print 563.93 / 2 * 3 ** 5
 
-return 7 + 8 * 9
-return 7 * 8 + 9
+# return 7 + 8 * 9
+# return 7 * 8 + 9
 
 
 print x
@@ -70,12 +70,12 @@ def a_function__(x):
     if x > 8:
         print 'hi'
 
-assert min(x.k(9))
 
 # x = 23 ** rgi
 
 # fr(7)
 
+# statement examples
 if true :
     return 2 / 5
 
@@ -85,9 +85,9 @@ for Identifier in kk :
 
 k[1] = len([5,6])
 
-df('fg',rte,67)
-
 x -= min(1,3)
+
+df('fg',rte,67)
 
 x /= 7
 
@@ -106,3 +106,24 @@ while true and not false:
     endlessLoop("we are screwed")
 
 x -= 1 +1
+
+assert min(x.k(9))
+
+print 1, 'hello', y,s
+
+if x + 6 != 9 and p <= len(9):
+    if x == 98:
+    assert 9
+
+print [len(x), min(7, x.sth())]
+print len([3, 4])
+
+if y > 7 and not x > 8 or y <= 3:
+    print 'something'
+
+if y > 7 or not x > 8 and y <= 3 and not false:
+print 1
+
+if y  > not true and y <= 3 and not false:
+    print 1
+
