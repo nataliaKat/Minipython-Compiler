@@ -82,7 +82,10 @@ Productions
 
 	function = def id l_par argument? r_par semi statement;
 
-	argument = id assignment?;
+	argument = id assignment? not_first_argument*;
+
+	// Helper rule for more than one arguments in function declaration
+	not_first_argument = comma id assignment?;
 
 	assignment = eq value;
 
