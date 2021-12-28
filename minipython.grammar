@@ -1,0 +1,243 @@
+/* 
+* Davari Athina             8180020
+* Drosos Georgios-Petros    8180024
+* Katsiapi Natalia          8180040
+* Liargkovas Georgios       8180061
+*/
+
+Package minipython;
+
+Helpers
+	digit = ['0' .. '9'];
+	letter = ['a' .. 'z']|['A' .. 'Z']; 
+	cr = 13; 
+	lf = 10;
+	all = [0..127]; 
+	eol = lf | cr | cr lf ;
+	not_eol = [all - [cr + lf]]; 
+	quote = '"';
+	single_quote = ''';
+
+Tokens
+	tab = 9;
+	plus = '+';
+	minus_eq = '-=';
+	minus = '-';
+	dmult = '**';
+	mult = '*';
+	div_eq = '/=';
+	div = '/';
+	mod = '%';
+	comp_eq = '==';
+	great_eq = '>=';
+	less_eq = '<=';
+	not_eq = '!=';
+	eq = '=';
+	exclam = '!';
+	def = 'def';
+	l_par = '(';
+	r_par = ')';
+	l_br = '[';
+	r_br = ']';
+	comma=',';
+	and = 'and';
+	or = 'or';
+	not = 'not';
+	if = 'if';
+	elif = 'elif';
+	else = 'else';
+	while = 'while';
+	for = 'for';
+	in = 'in';
+	print = 'print';
+	return = 'return';
+	assert = 'assert';
+	len = 'len';
+	max = 'max';
+	min = 'min';
+	import = 'import';
+	from = 'from';
+	none = 'None';
+	as = 'as';
+	less = '<';
+	great = '>';
+	true = 'true';
+	semi = ':';
+	false = 'false';
+	blank = (' ' | lf | cr);
+	line_comment = '#' not_eol* eol; 
+	number = digit+ | (digit+ '.' digit+);
+	// Identifiers can also start with or contain underscope
+	id = (letter | '_')(letter | digit | '_')*;
+	string_literal = quote [not_eol - quote]* quote | 
+					single_quote [not_eol - single_quote]* single_quote;
+	sep = '.';
+
+Ignored Tokens
+	blank, line_comment;
+	
+Productions
+	goal = goal_helper*{-> New goal( [goal_helper] ) };
+	goal_helper = {func} function{-> New goal_helper.func( function ) } 
+                  | {stmt} statement{-> New goal_helper.stmt( statement ) };
+
+	function = def id l_par argument? r_par semi statement{-> New function( id , [argument], statement ) } ;
+
+	argument = id assignment? not_first_argument*{-> New argument( id , [assignment.value], [not_first_argument] ) };
+
+	not_first_argument = comma id assignment?{-> New not_first_argument( id , [assignment.value]) };
+
+	assignment{-> value} = eq value{-> value};
+
+    statement = {condition} tab* if comparison_or semi statement {-> New statement.condition(comparison_or.comparison, statement) }|
+				{loop_while} tab* while comparison_or semi statement {-> New statement.loop_while(comparison_or.comparison, statement) }|
+	            {loop_for} tab* for [id1]:id in [id2]:id semi statement  {-> New statement.loop_for(id1, id2, statement) }|
+				{return} tab* return expression  {-> New statement.return(expression) }|
+                {print} tab* print expression not_first_arg* {-> New statement.print( expression, [not_first_arg.expression]) }|
+				{assign_eq} tab* id eq expression {-> New statement.assign_eq(id, expression) }|
+				{assign_mineq} tab* id minus_eq expression {-> New statement.assign_mineq(id, expression) } |
+				{assign_diveq} tab* id div_eq expression {-> New statement.assign_diveq(id, expression) } |
+                {array_assign} tab* id l_br [ex1]:expression r_br eq [ex2]:expression {-> New statement.array_assign(id, ex1.expression, ex2.expression) } |
+				{assert} tab* assert expression not_first_arg? {-> New statement.assert(expression, [not_first_arg.expression]) } |
+				{func_call} tab* func_call {-> New statement.func_call(func_call)} |
+				{import} import_rule {-> New statement.import(import_rule )};
+
+    expression = {mult} multiplication {->multiplication.expression}|
+				{plus} expression plus multiplication {-> New expression.plus(expression, multiplication.expression)}|
+				{minus} expression minus multiplication{-> New expression.minus(expression, multiplication.expression)};
+	
+	multiplication{->expression} = {power} power{->power.expression} | 
+					{multiplication} multiplication mult power{-> New expression.multiplication(multiplication.expression, power.expression)} |
+					{division} multiplication div power {-> New expression.division(multiplication.expression, power.expression)}|
+					{mod} multiplication mod power{-> New expression.mod(multiplication.expression, power.expression)};
+
+	power{->expression} = {something} first_level{-> first_level.expression} |
+			{power} power dmult first_level{-> New expression.power(power.expression, first_level.expression)};
+
+	first_level{->expression} = {val} value {-> New expression.val(value)}|
+				{identifier} id{-> New expression.identifier(id)}|
+				{max} max l_par value not_first_value* r_par {-> New expression.max(value, [not_first_value.value])}|
+				{min} min l_par value not_first_value* r_par {-> New expression.min(value,[not_first_value.value])}|
+				{len} len l_par expression r_par {-> New expression.len(expression)}|
+				{function} func_call {-> New expression.function(func_call)}|
+				{subscription} id l_br expression r_br {-> New expression.subscription(id, expression)}|
+				{array} l_br expression not_first_expression* r_br{-> New expression.array(expression, [not_first_expression.expression])};
+
+	not_first_value{-> value} = comma value{-> value};
+
+	not_first_expression{-> expression} = comma expression{-> expression};
+
+    import_rule = {without_from} import module import_alias? not_first_import_module* {-> New import_rule.without_from(module, [import_alias], [not_first_import_module])}|
+				{with_from} from module import id import_alias? not_first_import_id* {-> New import_rule.with_from(module, id, [import_alias], [not_first_import_id])};
+
+	module = module_caller* id{-> New module([module_caller], id)};
+
+	module_caller = id sep {-> New module_caller(id)};
+
+	not_first_import_module = comma module import_alias?{-> New not_first_import_module(module, [import_alias])};
+
+	not_first_import_id = comma id import_alias?{-> New not_first_import_id(id, [import_alias])};
+
+	import_alias = as id{-> New import_alias(id)};
+
+    func_call = id l_par arglist? r_par{-> New func_call(id, [arglist.expression])};
+
+	arglist{-> expression*} = expression not_first_arg*{-> [expression not_first_arg.expression]};
+
+    not_first_arg{-> expression} = comma expression{-> expression};
+
+	comparison_or{->comparison} = {comp_and} comparison_and {->comparison_and.comparison} |
+					{or_comp} comparison_or or comparison_and {-> New comparison.or_comp(comparison_or.comparison, comparison_and.comparison)};
+
+	comparison_and{->comparison} = {comparison} comparison {->comparison.comparison}|
+						{and_comp} comparison_and and comparison {-> New comparison.and_comp(comparison_and.comparison, comparison.comparison)};
+
+	comparison = {great} [exp1]:expression great [exp2]:expression {-> New comparison.great(exp1.expression, exp2.expression)} |
+				{less} [exp1]:expression less [exp2]:expression {-> New comparison.less(exp1.expression, exp2.expression)} |
+				{great_eq} [exp1]:expression great_eq [exp2]:expression {-> New comparison.great_eq(exp1.expression, exp2.expression)} |
+				{less_eq} [exp1]:expression less_eq [exp2]:expression {-> New comparison.less_eq(exp1.expression, exp2.expression)} |
+				{not_eq} [exp1]:expression not_eq [exp2]:expression {-> New comparison.not_eq(exp1.expression, exp2.expression)} |	
+				{comp_eq} [exp1]:expression comp_eq [exp2]:expression {-> New comparison.comp_eq(exp1.expression, exp2.expression)} |
+				{true} true {-> New comparison.true()}|
+				{false} false {-> New comparison.false()}|
+				{not_c} not comparison {-> New comparison.not_c(comparison)};
+
+    value = {f_call} id sep func_call {-> New value.f_call(id, func_call)}|
+	        {num} number {-> New value.number(number)}|
+            {string} string_literal {-> New value.string(string_literal)}|
+			{none} none {-> New value.none(none)};
+
+Abstract Syntax Tree
+
+	goal  = goal_helper*;
+
+	goal_helper =  {func} function | {stmt} statement;
+
+    function = id argument* statement;
+
+    argument = id value* not_first_argument*;   
+
+    not_first_argument = id value*;
+
+    statement = {condition} comparison statement |
+				{loop_while} comparison statement |
+	            {loop_for} [id1]:id [id2]:id statement |
+				{return} expression |
+                {print} [l]:expression [r]:expression* |
+				{assign_eq} id expression |
+                {assign_mineq} id expression |
+                {assign_diveq} id expression |
+                {array_assign} id [ex1]:expression [ex2]:expression |
+				{assert} [l]:expression [r]:expression* |
+				{func_call} func_call |
+				{import} import_rule;
+
+    expression = {plus} [l]:expression [r]:expression |
+				{minus} [l]:expression [r]:expression |
+                {multiplication}   [l]:expression [r]:expression|
+                {division}   [l]:expression [r]:expression|
+                {mod}   [l]:expression [r]:expression|
+                {power} [l]:expression [r]:expression|
+				{val} value |
+                {identifier} id |
+				{max} [l]:value [r]:value* |
+				{min} [l]:value [r]:value* |
+				{len} expression |
+				{function} func_call |
+				{subscription} id expression |
+				{array} [l]:expression [r]:expression* ;
+	
+	import_rule = {without_from} module import_alias* not_first_import_module* |
+				{with_from} module id import_alias* not_first_import_id*;
+
+    module = module_caller* id;
+
+	module_caller = id;
+
+	not_first_import_module = module import_alias*;
+
+	not_first_import_id = id import_alias*;
+
+	import_alias = id;
+
+    func_call = id expression*;
+
+	comparison = {comp_and} comparison |
+				 {or_comp} [l]:comparison [r]:comparison |
+                 {comparison} comparison |
+				 {and_comp} [l]:comparison [r]:comparison |
+	             {great} [exp1]:expression [exp2]:expression |
+				 {less} [exp1]:expression [exp2]:expression |
+				 {great_eq} [exp1]:expression [exp2]:expression |
+				 {less_eq} [exp1]:expression [exp2]:expression |
+				 {not_eq} [exp1]:expression [exp2]:expression |	
+				 {comp_eq} [exp1]:expression [exp2]:expression |
+				 {true} |
+				 {false} |
+				 {not_c} comparison;
+
+	value = {f_call} id func_call |
+			{number} number |
+            {string} string_literal |
+			{none} none;
+
