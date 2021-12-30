@@ -27,3 +27,7 @@ minipython/
 *.bat
 sablecc
 
+.idea
+Minipython-Compiler.iml
+out
+

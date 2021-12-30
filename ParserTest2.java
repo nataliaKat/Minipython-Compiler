@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Hashtable;
+
 import minipython.lexer.Lexer;
 import minipython.parser.Parser;
 import minipython.node.Start;
@@ -18,7 +20,12 @@ public class ParserTest2
 
       Start ast = parser.parse();
 
-	ast.apply(new ASTPrinter());
+	  ast.apply(new ASTPrinter());
+      Hashtable symtable =  new Hashtable();
+      ast.apply(new Visitor(symtable));
+      /* Gia ton deutero visitor grapste thn entolh
+       * ast.apply(new mysecondvisitor(symtable));
+       */
 
 //      System.out.println(ast);
     }

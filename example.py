@@ -7,19 +7,19 @@ fr()
  
 print [4**5,5,2]
 print len([4**5,5,2])
-print len(6**6)
-print something[2**7]
+# print len(6**6)
+# print something[2**7]
 print 8 ** max(3, 8)
 
-print 563.93 / 2 * 3 ** 5
+# print 563.93 / 2 * 3 ** 5
 
-print 563.93 / testf(2 * 3) ** 5
+# print 563.93 / testf(2 * 3) ** 5
 
-print 563.93 ** 2 * 3
+# print 563.93 ** 2 * 3
 
-print 563.93 / testf(2 * 3, [y, x, w] ** q) ** 5
+# print 563.93 / testf(2 * 3, [y, x, w] ** q) ** 5
 
-testf(2* 3 ,[y, x, w] ** k)
+# testf(2* 3 ,[y, x, w] ** k)
 
 
 print 563.93 / 2 * 3 ** 5
@@ -116,3 +116,13 @@ print 'yuteT'
 
 while true and not false:
     endlessLoop("we are screwed")
+
+
+# def testfunc(a,):
+#     print name, "studies in", university
+# testfunc("kwstas")
+
+def complexfunc(am,k):
+    print courses[0]
+    print grades["compilers"]
+k = complexfunc()
