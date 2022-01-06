@@ -3,11 +3,11 @@ import minipython.node.*;
 
 import java.util.Hashtable;
 
-public class Visitor extends DepthFirstAdapter {
+public class Visitor2 extends DepthFirstAdapter {
 
     private Hashtable symtable;
 
-    Visitor(Hashtable symtable) {
+    Visitor2(Hashtable symtable) {
         this.symtable = symtable;
     }
 
@@ -27,12 +27,14 @@ public class Visitor extends DepthFirstAdapter {
             }
         }
         if (isValueRight) {
-            boolean isString = ((AValExpression) node.getR()).getValue() instanceof AStringValue;
+            boolean isString = ((AValExpression) node.getR()).
+getValue() instanceof AStringValue;
             if (isString) {
                 // TODO: Find line in productions
                 System.out.println("Cannot add string value with number");
             }
         }
+
 
     }
 

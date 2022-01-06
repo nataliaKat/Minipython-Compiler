@@ -22,7 +22,8 @@ public class ParserTest2
 
 	  ast.apply(new ASTPrinter());
       Hashtable symtable =  new Hashtable();
-      ast.apply(new Visitor(symtable));
+      ast.apply(new SymbolTableFiller(symtable));
+      System.out.println(symtable);
       /* Gia ton deutero visitor grapste thn entolh
        * ast.apply(new mysecondvisitor(symtable));
        */
