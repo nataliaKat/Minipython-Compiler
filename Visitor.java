@@ -36,4 +36,30 @@ public class Visitor extends DepthFirstAdapter {
 
     }
 
+    @Override
+    public void caseAFunction(AFunction node)
+    {
+        inAFunction(node);
+        String fName = node.getId().toString();
+		int line = ((TId) node.getId()).getLine();
+        System.out.print(fName);
+
+    //     if(node.getId() != null)
+    //     {
+    //         node.getId().apply(this);
+    //     }
+    //     {
+    //         Object temp[] = node.getArgument().toArray();
+    //         for(int i = 0; i < temp.length; i++)
+    //         {
+    //             ((PArgument) temp[i]).apply(this);
+    //         }
+    //     }
+    //     if(node.getStatement() != null)
+    //     {
+    //         node.getStatement().apply(this);
+    //     }
+    //     outAFunction(node);
+     }
+
 }
