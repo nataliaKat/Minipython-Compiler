@@ -27,8 +27,7 @@ public class Visitor2 extends DepthFirstAdapter {
             }
         }
         if (isValueRight) {
-            boolean isString = ((AValExpression) node.getR()).
-getValue() instanceof AStringValue;
+            boolean isString = ((AValExpression) node.getR()).getValue() instanceof AStringValue;
             if (isString) {
                 // TODO: Find line in productions
                 System.out.println("Cannot add string value with number");
