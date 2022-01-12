@@ -15,16 +15,40 @@ public class SymbolTableFiller extends DepthFirstAdapter {
     public void inAAssignEqStatement(AAssignEqStatement node) {
         String varName = node.getId().toString().trim();
         String type = "";
-        if (node.getExpression() instanceof AMinusExpression ||
-            node.getExpression() instanceof AMultiplicationExpression ||
-            node.getExpression() instanceof ADivisionExpression ||
-            node.getExpression() instanceof AModExpression ||
-            node.getExpression() instanceof APowerExpression ||
-            node.getExpression() instanceof ALenExpression
+        PExpression expression = node.getExpression();
+        if (expression instanceof AMinusExpression ||
+            expression instanceof AMultiplicationExpression ||
+            expression instanceof ALenExpression ||
+            expression instanceof ADivisionExpression ||
+            expression instanceof AModExpression ||
+            expression instanceof APowerExpression
         ) type = "number";
+        else if (expression instanceof APlusExpression) {
+            if (((APlusExpression) expression).getL() instanceof AValExpression) {
+                PExpression left = ((APlusExpression) expression).getL();
+                if (((AValExpression)left).getValue() instanceof AStringValue) {
+                    type = "string";
+                } else if (((AValExpression)left).getValue() instanceof ANumberValue) {
+                    type = "number";
+                }
+            }
+        } else if (expression instanceof AValExpression) {
+            if (((AValExpression) expression).getValue() instanceof AStringValue)
+                type = "string";
+            else if (((AValExpression)expression).getValue() instanceof ANumberValue)
+                type = "number";
+        } else if (expression instanceof AIdentifierExpression) {
+            String id = ((AIdentifierExpression) expression).getId().toString().trim();
+            System.out.println("found id" + ((AIdentifierExpression) expression).getId());
+            if (symtable.containsKey(id)) {
+                type = ((Variable)symtable.get(id)).getType();
+            }
+        }
         if (!symtable.contains(varName))
             symtable.put(varName, new Variable(varName, type));
     }
+    
+
 //
 //    @Override
 //    public void inAStringValue(AStringValue node) {
@@ -72,8 +96,14 @@ public class SymbolTableFiller extends DepthFirstAdapter {
 
     @Override
     public void inAPowerExpression(APowerExpression node) {
-        boolean isArithmetic = checkArithmetic((AValExpression)node.getL(), (AValExpression) node.getR());
-        System.out.println(isArithmetic + " from power");
+        PExpression left = node.getL();
+        PExpression right = node.getR();
+//        if (left instanceof AValExpression)
+//        boolean isArithmetic = checkArithmetic((AValExpression)node.getL(), (AValExpression) node.getR());
+//        System.out.println(isArithmetic + " from power");
+//        if (node.getL() instanceof AIdentifierExpression) {
+//            System.out.println(node.getL());
+//        }
     }
 
     //TODO: Make method with duplicate code and make special checks for plus
@@ -89,6 +119,11 @@ public class SymbolTableFiller extends DepthFirstAdapter {
                 System.out.println("problem in multiplication right");
             }
         }
+    }
+
+    @Override
+    public void inAIdentifierExpression(AIdentifierExpression node) {
+
     }
 
     @Override

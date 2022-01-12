@@ -1,2 +1,83 @@
+import minipython.node.PExpression;
+
+import java.util.Arrays;
+
 public class Function {
+
+    private String name;
+    private String returnType; /* string, none, number,
+                                undefined αν δεν έχει συγκεκριμένο τύπο επιστροφής πχ. x+y (εξαρτάται μόνο από μεταβλητές-ορίσματα)
+                                void αν δεν έχει return */
+    private PExpression returnExpression;
+    private int numOfDefaultParameters;
+    private int numOfAllParameters;
+    private Variable[] parameters;
+
+
+    public Function(String name, int numOfDefaultParameters, int numOfAllParameters, Variable[] parameters) {
+        this.name = name;
+        this.numOfDefaultParameters = numOfDefaultParameters;
+        this.numOfAllParameters = numOfAllParameters;
+        this.parameters = parameters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
+    }
+
+    public PExpression getReturnExpression() {
+        return returnExpression;
+    }
+
+    public void setReturnExpression(PExpression returnExpression) {
+        this.returnExpression = returnExpression;
+    }
+
+    public int getNumOfDefaultParameters() {
+        return numOfDefaultParameters;
+    }
+
+    public void setNumOfDefaultParameters(int numOfDefaultParameters) {
+        this.numOfDefaultParameters = numOfDefaultParameters;
+    }
+
+    public int getNumOfAllParameters() {
+        return numOfAllParameters;
+    }
+
+    public void setNumOfAllParameters(int numOfAllParameters) {
+        this.numOfAllParameters = numOfAllParameters;
+    }
+
+    public Variable[] getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Variable[] parameters) {
+        this.parameters = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return "Function{" +
+                "name='" + name + '\'' +
+                ", returnType='" + returnType + '\'' +
+                ", returnExpression=" + returnExpression +
+                ", numOfDefaultParameters=" + numOfDefaultParameters +
+                ", numOfAllParameters=" + numOfAllParameters +
+                ", parameters=" + Arrays.toString(parameters) +
+                '}';
+    }
 }

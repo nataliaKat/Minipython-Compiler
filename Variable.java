@@ -1,13 +1,14 @@
+import java.util.Arrays;
+
 public class Variable {
 
     private String name;
     private String type;
-    private Function function;
+    private int initLine;
+    private String[] elementTypes;
 
-    public Variable(String name, String type, Function function) {
+    public Variable(String name) {
         this.name = name;
-        this.type = type;
-        this.function = function;
     }
 
     public Variable(String name, String type) {
@@ -15,6 +16,18 @@ public class Variable {
         this.type = type;
     }
 
+    public Variable(String name, String type, int initLine) {
+        this.name = name;
+        this.type = type;
+        this.initLine = initLine;
+    }
+
+    public Variable(String name, String type, int initLine, String[] elementTypes) {
+        this.name = name;
+        this.type = type;
+        this.initLine = initLine;
+        this.elementTypes = elementTypes;
+    }
 
     public String getName() {
         return name;
@@ -32,12 +45,20 @@ public class Variable {
         this.type = type;
     }
 
-    public Function getFunction() {
-        return function;
+    public int getInitLine() {
+        return initLine;
     }
 
-    public void setFunction(Function function) {
-        this.function = function;
+    public void setInitLine(int initLine) {
+        this.initLine = initLine;
+    }
+
+    public String[] getElementTypes() {
+        return elementTypes;
+    }
+
+    public void setElementTypes(String[] elementTypes) {
+        this.elementTypes = elementTypes;
     }
 
     @Override
@@ -47,16 +68,19 @@ public class Variable {
 
         Variable variable = (Variable) o;
 
+        if (initLine != variable.initLine) return false;
         if (!name.equals(variable.name)) return false;
         if (!type.equals(variable.type)) return false;
-        return function != null ? function.equals(variable.function) : variable.function == null;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(elementTypes, variable.elementTypes);
     }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + (function != null ? function.hashCode() : 0);
+        result = 31 * result + initLine;
+        result = 31 * result + Arrays.hashCode(elementTypes);
         return result;
     }
 
@@ -65,7 +89,8 @@ public class Variable {
         return "Variable{" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", function=" + function +
+                ", initLine=" + initLine +
+                ", elementTypes=" + Arrays.toString(elementTypes) +
                 '}';
     }
 }

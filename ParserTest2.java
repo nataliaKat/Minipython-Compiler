@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Hashtable;
+import java.util.List;
 
 import minipython.lexer.Lexer;
 import minipython.parser.Parser;
@@ -22,8 +23,10 @@ public class ParserTest2
 
 	  ast.apply(new ASTPrinter());
       Hashtable symtable =  new Hashtable();
-      ast.apply(new SymbolTableFiller(symtable));
-      System.out.println(symtable);
+      Hashtable<String, List<Function>> functions =  new Hashtable();
+//      ast.apply(new SymbolTableFiller(symtable));
+      ast.apply(new Visitor1(functions));
+      System.out.println(functions);
       /* Gia ton deutero visitor grapste thn entolh
        * ast.apply(new mysecondvisitor(symtable));
        */
