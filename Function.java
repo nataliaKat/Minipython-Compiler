@@ -1,4 +1,5 @@
 import minipython.node.PExpression;
+import minipython.node.PStatement;
 
 import java.util.Arrays;
 
@@ -8,7 +9,7 @@ public class Function {
     private String returnType; /* string, none, number,
                                 undefined αν δεν έχει συγκεκριμένο τύπο επιστροφής πχ. x+y (εξαρτάται μόνο από μεταβλητές-ορίσματα)
                                 void αν δεν έχει return */
-    private PExpression returnExpression;
+    private PStatement statement;
     private int numOfDefaultParameters;
     private int numOfAllParameters;
     private Variable[] parameters;
@@ -16,6 +17,14 @@ public class Function {
 
     public Function(String name, int numOfDefaultParameters, int numOfAllParameters, Variable[] parameters) {
         this.name = name;
+        this.numOfDefaultParameters = numOfDefaultParameters;
+        this.numOfAllParameters = numOfAllParameters;
+        this.parameters = parameters;
+    }
+
+    public Function(String name, int numOfDefaultParameters, int numOfAllParameters, PStatement statement, Variable[] parameters) {
+        this.name = name;
+        this.statement = statement;
         this.numOfDefaultParameters = numOfDefaultParameters;
         this.numOfAllParameters = numOfAllParameters;
         this.parameters = parameters;
@@ -37,12 +46,12 @@ public class Function {
         this.returnType = returnType;
     }
 
-    public PExpression getReturnExpression() {
-        return returnExpression;
+    public PStatement getStatement() {
+        return statement;
     }
 
-    public void setReturnExpression(PExpression returnExpression) {
-        this.returnExpression = returnExpression;
+    public void setStatement(PStatement statement) {
+        this.statement = statement;
     }
 
     public int getNumOfDefaultParameters() {
@@ -74,7 +83,7 @@ public class Function {
         return "Function{" +
                 "name='" + name + '\'' +
                 ", returnType='" + returnType + '\'' +
-                ", returnExpression=" + returnExpression +
+                ", statement=" + statement +
                 ", numOfDefaultParameters=" + numOfDefaultParameters +
                 ", numOfAllParameters=" + numOfAllParameters +
                 ", parameters=" + Arrays.toString(parameters) +

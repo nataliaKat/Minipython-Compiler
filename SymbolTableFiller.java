@@ -5,10 +5,10 @@ import java.util.Hashtable;
 
 public class SymbolTableFiller extends DepthFirstAdapter {
 
-    private Hashtable symtable;
+    private Hashtable<String, Variable> variables;
 
-    SymbolTableFiller(Hashtable symtable) {
-        this.symtable = symtable;
+    SymbolTableFiller(Hashtable<String, Variable> variables) {
+        this.variables = variables;
     }
 
     @Override
@@ -40,12 +40,12 @@ public class SymbolTableFiller extends DepthFirstAdapter {
         } else if (expression instanceof AIdentifierExpression) {
             String id = ((AIdentifierExpression) expression).getId().toString().trim();
             System.out.println("found id" + ((AIdentifierExpression) expression).getId());
-            if (symtable.containsKey(id)) {
-                type = ((Variable)symtable.get(id)).getType();
+            if (variables.containsKey(id)) {
+                type = ((Variable)variables.get(id)).getType();
             }
         }
-        if (!symtable.contains(varName))
-            symtable.put(varName, new Variable(varName, type));
+        if (!variables.contains(varName))
+            variables.put(varName, new Variable(varName, type));
     }
     
 

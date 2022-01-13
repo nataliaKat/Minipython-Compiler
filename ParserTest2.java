@@ -22,11 +22,15 @@ public class ParserTest2
       Start ast = parser.parse();
 
 	  ast.apply(new ASTPrinter());
-      Hashtable symtable =  new Hashtable();
-      Hashtable<String, List<Function>> functions =  new Hashtable();
+      Hashtable<String, Variable> variables = new Hashtable();
+      Hashtable<String, List<Function>> functions =  new Hashtable(); /* List of functions for overloading */
 //      ast.apply(new SymbolTableFiller(symtable));
       ast.apply(new Visitor1(functions));
+      ast.apply(new Visitor2(variables, functions));
+      System.out.println("Functions");
       System.out.println(functions);
+      System.out.println("Variables");
+      System.out.println(variables);
       /* Gia ton deutero visitor grapste thn entolh
        * ast.apply(new mysecondvisitor(symtable));
        */
