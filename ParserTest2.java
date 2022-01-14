@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import minipython.lexer.Lexer;
 import minipython.parser.Parser;
@@ -34,8 +35,12 @@ public class ParserTest2
       System.out.println("Functions");
       System.out.println(functions);
       System.out.println("Variables");
-      System.out.println(variables);
+      for (Map.Entry<String, Variable> entry: variables.entrySet()) {
+        String key = entry.getKey();
+        Variable value = entry.getValue();
 
+        System.out.println("Key: " + key + " Value: " + value);
+      }
 //      System.out.println(ast);
     }
     catch (Exception e)
