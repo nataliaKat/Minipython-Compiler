@@ -27,6 +27,7 @@ public class ParserTest2
 //      ast.apply(new SymbolTableFiller(symtable));
       ast.apply(new Visitor1(functions));
       ast.apply(new Visitor2(variables, functions));
+      ast.apply(new Visitor3(variables, functions));
       System.out.println("Functions");
       System.out.println(functions);
       System.out.println("Variables");
