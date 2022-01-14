@@ -1,6 +1,8 @@
 import minipython.analysis.DepthFirstAdapter;
 import minipython.node.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class Visitor3 extends DepthFirstAdapter {
         this.variables = variables;
         this.functions = functions;
     }
-
+    private static final ArrayList<String> ACCEPTED_TYPES =  new ArrayList<>(Arrays.asList("String", "Number", "Array", "None"));
 
     /**
      * Checks if a value is string (Not finished)
