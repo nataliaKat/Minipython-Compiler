@@ -35,9 +35,6 @@ public class ParserTest2
       System.out.println(functions);
       System.out.println("Variables");
       System.out.println(variables);
-      /* Gia ton deutero visitor grapste thn entolh
-       * ast.apply(new mysecondvisitor(symtable));
-       */
 
 //      System.out.println(ast);
     }

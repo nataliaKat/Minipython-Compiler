@@ -58,15 +58,27 @@ public class Visitor3 extends DepthFirstAdapter {
 //            System.out.println(node.getL());
 //        }
 //    }
-//    @Override
-//    public void inAAssignEqStatement(AAssignEqStatement node) {
-//        String name = node.getId().toString().trim();
-//        int line = node.getId().getLine() / 2 + 1;
-//        PExpression expression = node.getExpression();
-//        String type = getExpressionType(expression, line);
-//        Variable newVar = new Variable(name, type, line);
-//        if (type != null) variables.put(name, newVar);
-//    }
+
+
+
+
+    @Override
+    public void inAAssignEqStatement(AAssignEqStatement node) {
+        String name = node.getId().getText();
+        int line = node.getId().getLine()/2 +1;
+        PExpression expression = node.getExpression();
+
+        String type = getExpressionType(expression, line);
+        Variable newVar = new Variable(name, type, line);
+        if (type != null) variables.put(name, newVar);
+    }
+
+
+
+
+
+
+
 
     private String getExpressionType(PExpression expression, int line) {
         String type = "";
@@ -121,7 +133,17 @@ public class Visitor3 extends DepthFirstAdapter {
             }
             return "number";
         } else if (expression instanceof AModExpression) {
-
+            PExpression left = ((AModExpression) expression).getL();
+            PExpression right = ((AModExpression) expression).getR();
+            String typeLeft =  getExpressionType(left, line);
+            String typeRight =  getExpressionType(right, line);
+            if (typeLeft == null || typeRight == null) {
+                return null;
+            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
+                System.out.println("Unsupported operand types for %, line: " + line);
+                return null;
+            }
+            return "number";
         }
 //        elssion instanceof AArrayExpression) {
 //     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
