@@ -50,14 +50,17 @@ ad(1, 1)
 add(1, 1)
 add(1, 1, 1, 1 ,1)
 
-#Q7 We expect Errors in Line 54 and 58
-def add(x):
+#Q7 We expect Errors in Line 56, 58, 62
+def q7(x, y, z=0):
     print 4
-def add(x,y, z):
+def q7(x,y, z=1):
     print 4
-def add(x,y, z):
+def q7(x,y, z):
      print 4
-add(5)
+def q7(x,y, z, k=0):
+     print 4
+def q7(x,y):
+    print 4
 
 
 # y = x
