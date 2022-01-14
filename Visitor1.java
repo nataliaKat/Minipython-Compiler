@@ -22,6 +22,7 @@ public class Visitor1 extends DepthFirstAdapter {
     }
 
     private void putToFunctions(Function f) {
+        boolean check = true;
         if (!symtable.containsKey(f.getName())) {
             List functions = new LinkedList();
             functions.add(f);
@@ -33,8 +34,13 @@ public class Visitor1 extends DepthFirstAdapter {
             for (Function function : functions) {
                 if (function.getNumOfAllParameters() == allArgs ||
                         (function.getNumOfAllParameters() - function.getNumOfDefaultParameters()) == nonDefaults) {
-                    System.out.println("Function already defined.");
+                    check = false;
+                    System.out.println("Error on line: "+ f.getLine()+", Function " + f.getName() + " with "+ f.getNumOfAllParameters() + " arguments is already defined on line: " + function.getLine());
                 }
+            }
+            if (check) {
+                functions.add(f);
+                symtable.put(f.getName(), functions);
             }
         }
     }
@@ -43,6 +49,7 @@ public class Visitor1 extends DepthFirstAdapter {
     @Override
     public void inAFunction(AFunction node) {
         String name = node.getId().toString().trim();
+        int line = node.getId().getLine();
         LinkedList<AArgument> arguments = node.getArgument(); //size = 0 or 1
         AArgument argument;
         Variable[] argumentsArray = null;
@@ -72,7 +79,7 @@ public class Visitor1 extends DepthFirstAdapter {
         }
         int numOfAllParams = 0;
         if (argumentsArray != null) numOfAllParams = argumentsArray.length;
-        Function f = new Function(name, defaultArgsNum, numOfAllParams, node.getStatement(), argumentsArray);
+        Function f = new Function(name, line, defaultArgsNum, numOfAllParams, node.getStatement(), argumentsArray);
         putToFunctions(f);
     }
 
