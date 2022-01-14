@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Function {
 
     private String name;
+    private int line;
     private String returnType; /* string, none, number,
                                 undefined αν δεν έχει συγκεκριμένο τύπο επιστροφής πχ. x+y (εξαρτάται μόνο από μεταβλητές-ορίσματα)
                                 void αν δεν έχει return */
@@ -15,15 +16,17 @@ public class Function {
     private Variable[] parameters;
 
 
-    public Function(String name, int numOfDefaultParameters, int numOfAllParameters, Variable[] parameters) {
+    public Function(String name, int line, int numOfDefaultParameters, int numOfAllParameters, Variable[] parameters) {
         this.name = name;
+        this.line = line;
         this.numOfDefaultParameters = numOfDefaultParameters;
         this.numOfAllParameters = numOfAllParameters;
         this.parameters = parameters;
     }
 
-    public Function(String name, int numOfDefaultParameters, int numOfAllParameters, PStatement statement, Variable[] parameters) {
+    public Function(String name, int line, int numOfDefaultParameters, int numOfAllParameters, PStatement statement, Variable[] parameters) {
         this.name = name;
+        this.line = line;
         this.statement = statement;
         this.numOfDefaultParameters = numOfDefaultParameters;
         this.numOfAllParameters = numOfAllParameters;
@@ -38,6 +41,13 @@ public class Function {
         this.name = name;
     }
 
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
     public String getReturnType() {
         return returnType;
     }
@@ -82,6 +92,7 @@ public class Function {
     public String toString() {
         return "Function{" +
                 "name='" + name + '\'' +
+                ", line=" + line +
                 ", returnType='" + returnType + '\'' +
                 ", statement=" + statement +
                 ", numOfDefaultParameters=" + numOfDefaultParameters +
