@@ -179,18 +179,18 @@ Abstract Syntax Tree
 
     not_first_argument = id value*;
 
-    statement = {condition} comparison statement |
-				{loop_while} comparison statement |
-	            {loop_for} [id1]:id [id2]:id statement |
-				{return} expression |
-                {print} [l]:expression [r]:expression* |
-				{assign_eq} id expression |
-                {assign_mineq} id expression |
-                {assign_diveq} id expression |
-                {array_assign} id [ex1]:expression [ex2]:expression |
-				{assert} [l]:expression [r]:expression* |
-				{func_call} func_call |
-				{import} import_rule;
+    statement = {condition} comparison statement | //loop
+				{loop_while} comparison statement | //loop
+	            {loop_for} [id1]:id [id2]:id statement | //loop
+				{return} expression | //mono tou
+                {print} [l]:expression [r]:expression* | //null
+				{assign_eq} id expression | //null
+                {assign_mineq} id expression | //null
+                {assign_diveq} id expression | //null
+                {array_assign} id [ex1]:expression [ex2]:expression | //null
+				{assert} [l]:expression [r]:expression* | //null
+				{func_call} func_call | //null
+				{import} import_rule; //null
 
     expression = {plus} [l]:expression [r]:expression |
 				{minus} [l]:expression [r]:expression |
