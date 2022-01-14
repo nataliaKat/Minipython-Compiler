@@ -101,6 +101,14 @@ public class Visitor2 extends DepthFirstAdapter {
             } else {
                 return variables.get(variableName).getType();
             }
+        } else if (expression instanceof AFunctionExpression) {
+            PFuncCall pFuncCall = ((AFunctionExpression) expression).getFuncCall();
+            String name = ((AFuncCall) pFuncCall).getId().toString().trim();
+            int numOfArgs = ((AFuncCall) pFuncCall).getExpression().size();
+            Function f = getFunction(name, numOfArgs);
+            if (f == null) {
+                System.out.println("Function not found, line: " + line);
+            }
         }
 //        elssion instanceof AArrayExpression) {
 //     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
@@ -111,6 +119,31 @@ public class Visitor2 extends DepthFirstAdapter {
 //            }
 //        }
         return type;
+    }
+
+    private PExpression getReturnExpression(PStatement pStatement) {
+        if (pStatement instanceof AReturnStatement) {
+            return  ((AReturnStatement) pStatement).getExpression();
+        } else if (pStatement instanceof AConditionStatement) {
+            return getReturnExpression(((AConditionStatement) pStatement).getStatement());
+        } else if (pStatement instanceof ALoopWhileStatement) {
+            return getReturnExpression(((ALoopWhileStatement) pStatement).getStatement());
+        } else if (pStatement instanceof ALoopForStatement) {
+            return getReturnExpression(((ALoopForStatement) pStatement).getStatement());
+        }
+        return null;
+    }
+
+    private Function getFunction(String name, int numOfArgs) {
+        if (functions.containsKey(name)) {
+            List<Function> funcs = functions.get(name);
+            for (Function f : funcs) {
+                if (f.getNumOfAllParameters() == numOfArgs) return f;
+                if (f.getNumOfAllParameters() - f.getNumOfDefaultParameters() == numOfArgs) return f;
+            }
+        }
+        System.out.print("Function " + name + " with " + numOfArgs + " parameters doesn't exist.");
+        return null;
     }
 
     private String getMaxType(AMaxExpression aMaxExpression) {

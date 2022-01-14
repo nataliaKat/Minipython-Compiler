@@ -39,19 +39,6 @@ public class Visitor1 extends DepthFirstAdapter {
         }
     }
 
-    private PExpression getReturnExpression(PStatement pStatement) {
-        if (pStatement instanceof AReturnStatement) {
-            return  ((AReturnStatement) pStatement).getExpression();
-        } else if (pStatement instanceof AConditionStatement) {
-            return getReturnExpression(((AConditionStatement) pStatement).getStatement());
-        } else if (pStatement instanceof ALoopWhileStatement) {
-            return getReturnExpression(((ALoopWhileStatement) pStatement).getStatement());
-        } else if (pStatement instanceof ALoopForStatement) {
-            return getReturnExpression(((ALoopForStatement) pStatement).getStatement());
-        }
-        return null;
-    }
-
     // TODO: Check if parameter already exists in argumentsArray
     @Override
     public void inAFunction(AFunction node) {
