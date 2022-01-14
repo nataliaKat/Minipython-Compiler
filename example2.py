@@ -33,6 +33,33 @@ o = min("1", "2")
 x = len("test")
 y1 = len(None)
 w = y1
+x = dfscfcds
+new_var = "1"
+power = 3 ** 4
+power = 3 ** power
+power = "test" ** power
+power1 = new_var ** power
+
+
+#Q2, Q3 We expect Errors in Line 45 and 49 and 51
+ad(1)
+add(1)
+def add(x, y=1):
+    print x ** kk
+ad(1, 1)
+add(1, 1)
+add(1, 1, 1, 1 ,1)
+
+#Q7 We expect Errors in Line 54 and 58
+def add(x):
+    print 4
+def add(x,y, z):
+    print 4
+def add(x,y, z):
+     print 4
+add(5)
+
+
 # y = x
 #
 # y=True
@@ -66,5 +93,4 @@ w = y1
 #         if x > 4:
 #             for x in test:
 #                 print x ** 8
-
 

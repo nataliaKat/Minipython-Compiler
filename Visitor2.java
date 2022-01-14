@@ -45,7 +45,7 @@ public class Visitor2 extends DepthFirstAdapter {
 
     }
 
-//    @Override
+    //    @Override
 //    public void inAPowerExpression(APowerExpression node) {
 //        PExpression left = node.getL();
 //        PExpression right = node.getR();
@@ -57,15 +57,56 @@ public class Visitor2 extends DepthFirstAdapter {
 //        }
 //    }
 
+
+    //Q1
+    @Override
+    public void inAIdentifierExpression(AIdentifierExpression node) {
+        String variable_name = node.getId().getText();
+        int line = node.getId().getLine();
+        int pos = node.getId().getPos();
+        if (!variables.containsKey(variable_name)) {
+            System.out.println("Error variable " + variable_name + ", line: " + line + " pos: "+ pos+ " does not exist");
+        }
+    }
+
     @Override
     public void inAAssignEqStatement(AAssignEqStatement node) {
-        String name = node.getId().toString().trim();
-        int line = node.getId().getLine() / 2 + 1;
-        PExpression expression = node.getExpression();
-        String type = getExpressionType(expression, line);
-        Variable newVar = new Variable(name, type, line);
-        if (type != null) variables.put(name, newVar);
+        String name = node.getId().getText();
+        variables.put(name, new Variable(name,""));
     }
+
+    @Override
+    public void inAFuncCall(AFuncCall node) {
+        String function_name
+                = node.getId().getText();
+        int numOfArgs = ((AFuncCall) node).getExpression().size();
+        int line = node.getId().getLine();
+        int pos = node.getId().getPos();
+        //Q2
+        if (!functions.containsKey(function_name)) {
+            System.out.println("Error function " + function_name + ", line: " + line + " pos: "+ pos+ " does not exist");
+        } else {
+            //Q3
+            Function f = Utils.getFunction(functions, function_name, numOfArgs);
+            if (f == null) {
+                System.out.println("Error function " + function_name + " with " + numOfArgs + " parameters in line: " + line + " pos: "+ pos+ " does not exist");
+            }
+        }
+    }
+
+//Q4
+
+
+
+//    @Override
+//    public void inAAssignEqStatement(AAssignEqStatement node) {
+//        String name = node.getId().toString().trim();
+//        int line = node.getId().getLine() / 2 + 1;
+//        PExpression expression = node.getExpression();
+//        String type = getExpressionType(expression, line);
+//        Variable newVar = new Variable(name, type, line);
+//        if (type != null) variables.put(name, newVar);
+//    }
 
     private String getExpressionType(PExpression expression, int line) {
         String type = "";
@@ -105,10 +146,22 @@ public class Visitor2 extends DepthFirstAdapter {
             PFuncCall pFuncCall = ((AFunctionExpression) expression).getFuncCall();
             String name = ((AFuncCall) pFuncCall).getId().toString().trim();
             int numOfArgs = ((AFuncCall) pFuncCall).getExpression().size();
-            Function f = getFunction(name, numOfArgs);
+            Function f = Utils.getFunction(functions, name, numOfArgs);
             if (f == null) {
                 System.out.println("Function not found, line: " + line);
             }
+        } else if (expression instanceof APowerExpression) {
+            PExpression left = ((APowerExpression) expression).getL();
+            PExpression right = ((APowerExpression) expression).getR();
+            String typeLeft =  getExpressionType(left, line);
+            String typeRight =  getExpressionType(right, line);
+            if (!(typeLeft.equals("number") || typeRight.equals("number"))) {
+                System.out.println("Unsupported operand types, line: " + line);
+                return null;
+            }
+            return "number";
+        } else if (expression instanceof AModExpression) {
+
         }
 //        elssion instanceof AArrayExpression) {
 //     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
@@ -134,17 +187,6 @@ public class Visitor2 extends DepthFirstAdapter {
         return null;
     }
 
-    private Function getFunction(String name, int numOfArgs) {
-        if (functions.containsKey(name)) {
-            List<Function> funcs = functions.get(name);
-            for (Function f : funcs) {
-                if (f.getNumOfAllParameters() == numOfArgs) return f;
-                if (f.getNumOfAllParameters() - f.getNumOfDefaultParameters() == numOfArgs) return f;
-            }
-        }
-        System.out.print("Function " + name + " with " + numOfArgs + " parameters doesn't exist.");
-        return null;
-    }
 
     private String getMaxType(AMaxExpression aMaxExpression) {
         String type = getValueType(aMaxExpression.getL());
