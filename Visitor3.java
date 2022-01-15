@@ -177,7 +177,7 @@ public class Visitor3 extends DepthFirstAdapter {
                 System.out.println("Unsupported operand types, line: " + line);
                 return null;
             }
-            return "number";
+            type = "number";
         } else if (expression instanceof AModExpression) {
             PExpression left = ((AModExpression) expression).getL();
             PExpression right = ((AModExpression) expression).getR();
@@ -189,7 +189,46 @@ public class Visitor3 extends DepthFirstAdapter {
                 System.out.println("Unsupported operand types for %, line: " + line);
                 return null;
             }
-            return "number";
+            type = "number";
+        } else if (expression instanceof AMultiplicationExpression) {
+            PExpression left = ((AMultiplicationExpression) expression).getL();
+            PExpression right = ((AMultiplicationExpression) expression).getR();
+            String typeLeft =  getExpressionType(left, line);
+            String typeRight =  getExpressionType(right, line);
+            if (typeLeft == null || typeRight == null) {
+                return null;
+            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
+                System.out.println("Unsupported operand types for *, line: " + line);
+                return null;
+            }
+            type = "number";
+        } else if (expression instanceof AMinusExpression) {
+            PExpression left = ((AMinusExpression) expression).getL();
+            PExpression right = ((AMinusExpression) expression).getR();
+            String typeLeft = getExpressionType(left, line);
+            String typeRight = getExpressionType(right, line);
+            if (typeLeft == null || typeRight == null) {
+                return null;
+            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
+                System.out.println("Unsupported operand types for -, line: " + line);
+                return null;
+            }
+            type = "number";
+        } else if (expression instanceof APlusExpression) {
+            PExpression left = ((APlusExpression) expression).getL();
+            PExpression right = ((APlusExpression) expression).getR();
+            String typeLeft = getExpressionType(left, line);
+            String typeRight = getExpressionType(right, line);
+            if (typeLeft == null || typeRight == null) {
+                return null;
+            } else if (typeLeft.equals("number") && typeRight.equals("number")) {
+                type = "number";
+            } else if (typeLeft.equals("string") && typeRight.equals("string")) {
+                type = "string";
+            } else {
+                System.out.println("Unsupported operand types for +, line: " + line);
+                return null;
+            }
         }
 //        elssion instanceof AArrayExpression) {
 //     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
