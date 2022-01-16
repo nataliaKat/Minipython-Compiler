@@ -177,7 +177,6 @@ public class Visitor3 extends DepthFirstAdapter {
         } else if (expression instanceof AIdentifierExpression) {
             String variableName = ((AIdentifierExpression) expression).getId().toString().trim();
             if (!variables.containsKey(variableName)) {
-                System.out.println("Error variable" + variableName + ", line: " + line + " does not exist");
                 return null;
             } else {
                 return variables.get(variableName).getType();
@@ -197,7 +196,7 @@ public class Visitor3 extends DepthFirstAdapter {
                 type = "string";
 
             } else {
-                System.out.println("Unsupported operand types for +, line: " + line);
+                System.out.println("Error: Unsupported operand types for +, line: " + line);
                 type = null;
             }
         } else if (expression instanceof AFunctionExpression) {
@@ -245,7 +244,7 @@ public class Visitor3 extends DepthFirstAdapter {
         if (typeLeft == null || typeRight == null) {
             return null;
         } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
-            System.out.println("Unsupported operand types, line: " + line);
+            System.out.println("Error: Unsupported operand types, line: " + line);
             return null;
         } else return "number";
     }

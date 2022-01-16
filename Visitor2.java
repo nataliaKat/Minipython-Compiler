@@ -22,7 +22,7 @@ public class Visitor2 extends DepthFirstAdapter {
         int line = node.getId().getLine();
         int pos = node.getId().getPos();
         if (!variables.containsKey(variable_name)) {
-            System.out.println("Error variable " + variable_name + ", line: " + line + " pos: "+ pos+ " does not exist");
+            System.out.println("Error variable " + variable_name + ", line: " + line + " position: "+ pos+ " does not exist");
         }
     }
 
@@ -60,12 +60,12 @@ public class Visitor2 extends DepthFirstAdapter {
         int pos = node.getId().getPos();
         //Q2
         if (!functions.containsKey(function_name)) {
-            System.out.println("Error function " + function_name + ", line: " + line + " pos: " + pos + " does not exist");
+            System.out.println("Error function " + function_name + ", line: " + line + " position: " + pos + " does not exist");
         } else {
             //Q3
             Function f = Utils.getFunction(functions, function_name, numOfArgs);
             if (f == null) {
-                System.out.println("Error function " + function_name + " with " + numOfArgs + " parameters in line: " + line + " pos: " + pos + " does not exist");
+                System.out.println("Error function " + function_name + " with " + numOfArgs + " parameters in line: " + line + " position: " + pos + " does not exist");
             }
         }
     }
