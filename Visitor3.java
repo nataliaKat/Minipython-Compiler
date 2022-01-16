@@ -1,10 +1,7 @@
 import minipython.analysis.DepthFirstAdapter;
 import minipython.node.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class Visitor3 extends DepthFirstAdapter {
     private Hashtable<String, Variable> variables;
@@ -73,6 +70,97 @@ public class Visitor3 extends DepthFirstAdapter {
         if (type != null) variables.put(name, newVar);
     }
 
+    @Override
+    public void inAAssignDiveqStatement(AAssignDiveqStatement node) {
+        String name = node.getId().getText();
+        int line = node.getId().getLine()/2 +1;
+        PExpression expression = node.getExpression();
+        storeForArithmeticStatements(expression, line, name);
+    }
+
+    @Override
+    public void inAAssignMineqStatement(AAssignMineqStatement node) {
+        String name = node.getId().getText();
+        int line = node.getId().getLine()/2 +1;
+        PExpression expression = node.getExpression();
+        storeForArithmeticStatements(expression, line, name);
+    }
+
+    @Override
+    public void inAPrintStatement(APrintStatement node) {
+        int line = getLine(node.getL()) / 2 + 1;
+        String typeLeft = getExpressionType(node.getL(), line);
+        LinkedList<PExpression> expressions = node.getR();
+        if (typeLeft != null) {
+            for (PExpression expression : expressions) {
+                String typeRight = getExpressionType(expression, line);
+            }
+        }
+    }
+
+    @Override
+    public void inAAssertStatement(AAssertStatement node) {
+        int line = getLine(node.getL()) / 2 + 1;
+        String typeLeft = getExpressionType(node.getL(), line);
+        LinkedList<PExpression> expressions = node.getR();
+        if (typeLeft != null) {
+            for (PExpression expression : expressions) {
+                getExpressionType(expression, line);
+            }
+        }
+    }
+
+    private int getLine(PExpression expression) {
+        if (expression instanceof AValExpression) {
+            return getValueLine(((AValExpression) expression).getValue());
+        } else if (expression instanceof AMinExpression) {
+            return getValueLine(((AMinExpression) expression).getL());
+        } else if (expression instanceof AMaxExpression) {
+            return getValueLine(((AMaxExpression) expression).getL());
+        } else if (expression instanceof ALenExpression) {
+            return getLine(((ALenExpression) expression).getExpression());
+        } else if (expression instanceof ASubscriptionExpression) {
+            return getLine(((ASubscriptionExpression) expression).getExpression());
+        } else if (expression instanceof AFunctionExpression) {
+            PFuncCall pFuncCall = ((AFunctionExpression) expression).getFuncCall();
+            return ((AFuncCall) pFuncCall).getId().getLine();
+        } else if (expression instanceof AIdentifierExpression) {
+            return ((AIdentifierExpression) expression).getId().getLine();
+        } else if (expression instanceof AArrayExpression) {
+            return getLine(((AArrayExpression) expression).getL());
+        } else if (expression instanceof ArithmeticOperation) {
+            return  getLine(((ArithmeticOperation) expression).getL());
+        } else if (expression instanceof APlusExpression) {
+            return getLine(((APlusExpression) expression).getL());
+        }
+        return -1;
+    }
+
+    private int getValueLine(PValue pValue) {
+        if (pValue instanceof AStringValue)  {
+            return ((AStringValue) pValue).getStringLiteral().getLine();
+        } else if (pValue instanceof ANumberValue) {
+            return ((ANumberValue) pValue).getNumber().getLine();
+        } else if (pValue instanceof ANoneValue) {
+            return ((ANoneValue) pValue).getNone().getLine();
+        } else if (pValue instanceof AFCallValue) {
+            return ((AFCallValue) pValue).getId().getLine();
+        }
+        return -1;
+    }
+
+
+
+    private void storeForArithmeticStatements(PExpression expression, int line, String name) {
+        String type = getExpressionType(expression, line);
+        if (!type.equals("number")) {
+            System.out.println("Non numeric expression, line: " + line);
+            return;
+        }
+        Variable newVar = new Variable(name, type, line);
+        if (type != null) variables.put(name, newVar);
+    }
+
 //    @Override
 //    public void inAAssignEqStatement(AAssignEqStatement node) {
 //        String name = node.getId().getText();
@@ -121,13 +209,18 @@ public class Visitor3 extends DepthFirstAdapter {
 //        }
 //    }
 
+/*
+inAFuncCall
+περνουμε απο ταβλε το φθντιον μετα βαζουμε τιμες στα αρισματα στο ταβλε με τις μεταβλητες
+ψαχνουμε για ρετθρν και αμα δεν εχει επιστρεφει Νονε αλλιως επιστρεφει τυπο
+*/
 
 
 
 
 
     private String getExpressionType(PExpression expression, int line) {
-        String type = "";
+        String type = null;
         if (expression instanceof AValExpression) {
             type = getValueType(((AValExpression) expression).getValue());
         } else if (expression instanceof ALenExpression) {
@@ -141,13 +234,13 @@ public class Visitor3 extends DepthFirstAdapter {
             }
             type = "number";
         } else if (expression instanceof AMaxExpression) {
-            type = getMaxType((AMaxExpression)expression);
+            type = getMaxType((AMaxExpression) expression);
             if (type == null) {
                 System.out.println("Error in max, line: " + line);
                 return null;
             }
         } else if (expression instanceof AMinExpression) {
-            type = getMinType((AMinExpression)expression);
+            type = getMinType((AMinExpression) expression);
             if (type == null) {
                 System.out.println("Error in min, line: " + line);
                 return null;
@@ -169,65 +262,38 @@ public class Visitor3 extends DepthFirstAdapter {
                 System.out.println("Function not found, line: " + line);
             }
         } else if (expression instanceof APowerExpression) {
-            PExpression left = ((APowerExpression) expression).getL();
-            PExpression right = ((APowerExpression) expression).getR();
-            String typeLeft =  getExpressionType(left, line);
-            String typeRight =  getExpressionType(right, line);
-            if (!(typeLeft.equals("number") || typeRight.equals("number"))) {
-                System.out.println("Unsupported operand types, line: " + line);
-                return null;
-            }
-            type = "number";
+            type = getArithmeticType((APowerExpression) expression, line);
         } else if (expression instanceof AModExpression) {
-            PExpression left = ((AModExpression) expression).getL();
-            PExpression right = ((AModExpression) expression).getR();
-            String typeLeft =  getExpressionType(left, line);
-            String typeRight =  getExpressionType(right, line);
-            if (typeLeft == null || typeRight == null) {
-                return null;
-            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
-                System.out.println("Unsupported operand types for %, line: " + line);
-                return null;
-            }
-            type = "number";
+            type = getArithmeticType((AModExpression) expression, line);
         } else if (expression instanceof AMultiplicationExpression) {
-            PExpression left = ((AMultiplicationExpression) expression).getL();
-            PExpression right = ((AMultiplicationExpression) expression).getR();
-            String typeLeft =  getExpressionType(left, line);
-            String typeRight =  getExpressionType(right, line);
-            if (typeLeft == null || typeRight == null) {
-                return null;
-            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
-                System.out.println("Unsupported operand types for *, line: " + line);
-                return null;
-            }
-            type = "number";
+            type = getArithmeticType((AMultiplicationExpression) expression, line);
         } else if (expression instanceof AMinusExpression) {
-            PExpression left = ((AMinusExpression) expression).getL();
-            PExpression right = ((AMinusExpression) expression).getR();
-            String typeLeft = getExpressionType(left, line);
-            String typeRight = getExpressionType(right, line);
-            if (typeLeft == null || typeRight == null) {
-                return null;
-            } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
-                System.out.println("Unsupported operand types for -, line: " + line);
-                return null;
-            }
-            type = "number";
+            type = getArithmeticType((AMinusExpression) expression, line);
         } else if (expression instanceof APlusExpression) {
             PExpression left = ((APlusExpression) expression).getL();
             PExpression right = ((APlusExpression) expression).getR();
             String typeLeft = getExpressionType(left, line);
             String typeRight = getExpressionType(right, line);
             if (typeLeft == null || typeRight == null) {
-                return null;
+                type = null;
             } else if (typeLeft.equals("number") && typeRight.equals("number")) {
                 type = "number";
             } else if (typeLeft.equals("string") && typeRight.equals("string")) {
                 type = "string";
+
             } else {
                 System.out.println("Unsupported operand types for +, line: " + line);
-                return null;
+                type = null;
+            }
+        } else if (expression instanceof AFunctionExpression) {
+            String function_name = ((AFuncCall)((AFunctionExpression)expression).getFuncCall()).getId().getText();
+            int numOfArgs = ((AFuncCall)((AFunctionExpression)expression).getFuncCall()).getExpression().size();
+            if (functions.containsKey(function_name)) {
+                Function f = Utils.getFunction(functions, function_name, numOfArgs);
+                if (f != null) {
+                    Variable[] arguments = f.getParameters();
+                    AArgument arg;
+                }
             }
         }
 //        elssion instanceof AArrayExpression) {
@@ -239,6 +305,19 @@ public class Visitor3 extends DepthFirstAdapter {
 //            }
 //        }
         return type;
+    }
+
+    private String getArithmeticType(ArithmeticOperation node, int line) {
+        PExpression left = node.getL();
+        PExpression right = node.getR();
+        String typeLeft = getExpressionType(left, line);
+        String typeRight = getExpressionType(right, line);
+        if (typeLeft == null || typeRight == null) {
+            return null;
+        } else if (!(typeLeft.equals("number") && typeRight.equals("number"))) {
+            System.out.println("Unsupported operand types, line: " + line);
+            return null;
+        } else return "number";
     }
 
     private PExpression getReturnExpression(PStatement pStatement) {

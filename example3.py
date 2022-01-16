@@ -1,4 +1,7 @@
-test(x + 10)
-k = 8 
-lola(10)
-k = "ddd"
+def add(x,y):
+    return x + y
+print k
+k = 0
+
+x=None
+print x+None
