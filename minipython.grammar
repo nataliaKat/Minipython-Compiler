@@ -95,8 +95,8 @@ Productions
 				{return} tab* return expression  {-> New statement.return(expression) }|
                 {print} tab* print expression not_first_arg* {-> New statement.print( expression, [not_first_arg.expression]) }|
 				{assign_eq} tab* id eq expression {-> New statement.assign_eq(id, expression) }|
-				{assign_mineq} tab* id minus_eq expression {-> New statement.assign_mineq(id, expression) } |
-				{assign_diveq} tab* id div_eq expression {-> New statement.assign_diveq(id, expression) } |
+				{assign_mineq} tab* id minus_eq expression {-> New statement.assign_eq_operation(id, expression) } |
+				{assign_diveq} tab* id div_eq expression {-> New statement.assign_eq_operation(id, expression) } |
                 {array_assign} tab* id l_br [ex1]:expression r_br eq [ex2]:expression {-> New statement.array_assign(id, ex1.expression, ex2.expression) } |
 				{assert} tab* assert expression not_first_arg? {-> New statement.assert(expression, [not_first_arg.expression]) } |
 				{func_call} tab* func_call {-> New statement.func_call(func_call)} |
@@ -104,15 +104,15 @@ Productions
 
     expression = {mult} multiplication {->multiplication.expression}|
 				{plus} expression plus multiplication {-> New expression.plus(expression, multiplication.expression)}|
-				{minus} expression minus multiplication{-> New expression.minus(expression, multiplication.expression)};
+				{minus} expression minus multiplication{-> New expression.arithmetic_operation(expression, multiplication.expression)};
 	
 	multiplication{->expression} = {power} power{->power.expression} | 
-					{multiplication} multiplication mult power{-> New expression.multiplication(multiplication.expression, power.expression)} |
-					{division} multiplication div power {-> New expression.division(multiplication.expression, power.expression)}|
-					{mod} multiplication mod power{-> New expression.mod(multiplication.expression, power.expression)};
+					{multiplication} multiplication mult power{-> New expression.arithmetic_operation(multiplication.expression, power.expression)} |
+					{division} multiplication div power {-> New expression.arithmetic_operation(multiplication.expression, power.expression)}|
+					{mod} multiplication mod power{-> New expression.arithmetic_operation(multiplication.expression, power.expression)};
 
 	power{->expression} = {something} first_level{-> first_level.expression} |
-			{power} power dmult first_level{-> New expression.power(power.expression, first_level.expression)};
+			{power} power dmult first_level{-> New expression.arithmetic_operation(power.expression, first_level.expression)};
 
 	first_level{->expression} = {val} value {-> New expression.val(value)}|
 				{identifier} id{-> New expression.identifier(id)}|
@@ -179,25 +179,20 @@ Abstract Syntax Tree
 
     not_first_argument = id value*;
 
-    statement = {condition} comparison statement | //loop
-				{loop_while} comparison statement | //loop
-	            {loop_for} [id1]:id [id2]:id statement | //loop
-				{return} expression | //mono tou
-                {print} [l]:expression [r]:expression* | //null
-				{assign_eq} id expression | //null
-                {assign_mineq} id expression | //null
-                {assign_diveq} id expression | //null
-                {array_assign} id [ex1]:expression [ex2]:expression | //null
-				{assert} [l]:expression [r]:expression* | //null
-				{func_call} func_call | //null
-				{import} import_rule; //null
+    statement = {condition} comparison statement | 
+				{loop_while} comparison statement | 
+	            {loop_for} [id1]:id [id2]:id statement | 
+				{return} expression | 
+                {print} [l]:expression [r]:expression* | 
+				{assign_eq} id expression | 
+                {assign_eq_operation} id expression | 
+                {array_assign} id [ex1]:expression [ex2]:expression | 
+				{assert} [l]:expression [r]:expression* | 
+				{func_call} func_call | 
+				{import} import_rule; 
 
     expression = {plus} [l]:expression [r]:expression |
-				{minus} [l]:expression [r]:expression |
-                {multiplication}   [l]:expression [r]:expression|
-                {division}   [l]:expression [r]:expression|
-                {mod}   [l]:expression [r]:expression|
-                {power} [l]:expression [r]:expression|
+				{arithmetic_operation} [l]:expression [r]:expression |
 				{val} value |
                 {identifier} id |
 				{max} [l]:value [r]:value* |
