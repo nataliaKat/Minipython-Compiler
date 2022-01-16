@@ -5,16 +5,16 @@ package minipython.node;
 import java.util.*;
 import minipython.analysis.*;
 
-public final class APowerExpression extends PExpression implements ArithmeticOperation
+public final class AArithmeticOperationExpression extends PExpression
 {
     private PExpression _l_;
     private PExpression _r_;
 
-    public APowerExpression()
+    public AArithmeticOperationExpression()
     {
     }
 
-    public APowerExpression(
+    public AArithmeticOperationExpression(
         PExpression _l_,
         PExpression _r_)
     {
@@ -25,14 +25,14 @@ public final class APowerExpression extends PExpression implements ArithmeticOpe
     }
     public Object clone()
     {
-        return new APowerExpression(
+        return new AArithmeticOperationExpression(
             (PExpression) cloneNode(_l_),
             (PExpression) cloneNode(_r_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAPowerExpression(this);
+        ((Analysis) sw).caseAArithmeticOperationExpression(this);
     }
 
     public PExpression getL()

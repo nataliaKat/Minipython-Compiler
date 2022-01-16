@@ -128,12 +128,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAAssignMineqStatement(AAssignMineqStatement node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAAssignDiveqStatement(AAssignDiveqStatement node)
+    public void caseAAssignEqOperationStatement(AAssignEqOperationStatement node)
     {
         defaultCase(node);
     }
@@ -163,27 +158,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAMinusExpression(AMinusExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseADivisionExpression(ADivisionExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAModExpression(AModExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAPowerExpression(APowerExpression node)
+    public void caseAArithmeticOperationExpression(AArithmeticOperationExpression node)
     {
         defaultCase(node);
     }

@@ -5,16 +5,16 @@ package minipython.node;
 import java.util.*;
 import minipython.analysis.*;
 
-public final class AAssignDiveqStatement extends PStatement
+public final class AAssignEqOperationStatement extends PStatement
 {
     private TId _id_;
     private PExpression _expression_;
 
-    public AAssignDiveqStatement()
+    public AAssignEqOperationStatement()
     {
     }
 
-    public AAssignDiveqStatement(
+    public AAssignEqOperationStatement(
         TId _id_,
         PExpression _expression_)
     {
@@ -25,14 +25,14 @@ public final class AAssignDiveqStatement extends PStatement
     }
     public Object clone()
     {
-        return new AAssignDiveqStatement(
+        return new AAssignEqOperationStatement(
             (TId) cloneNode(_id_),
             (PExpression) cloneNode(_expression_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAAssignDiveqStatement(this);
+        ((Analysis) sw).caseAAssignEqOperationStatement(this);
     }
 
     public TId getId()

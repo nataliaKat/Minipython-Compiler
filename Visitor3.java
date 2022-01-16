@@ -68,15 +68,7 @@ public class Visitor3 extends DepthFirstAdapter {
     }
 
     @Override
-    public void inAAssignDiveqStatement(AAssignDiveqStatement node) {
-        String name = node.getId().getText();
-        int line = node.getId().getLine();
-        PExpression expression = node.getExpression();
-        storeForArithmeticStatements(expression, line, name);
-    }
-
-    @Override
-    public void inAAssignMineqStatement(AAssignMineqStatement node) {
+    public void inAAssignEqOperationStatement(AAssignEqOperationStatement node) {
         String name = node.getId().getText();
         int line = node.getId().getLine();
         PExpression expression = node.getExpression();
@@ -125,8 +117,8 @@ public class Visitor3 extends DepthFirstAdapter {
             return ((AIdentifierExpression) expression).getId().getLine();
         } else if (expression instanceof AArrayExpression) {
             return getLine(((AArrayExpression) expression).getL());
-        } else if (expression instanceof ArithmeticOperation) {
-            return getLine(((ArithmeticOperation) expression).getL());
+        } else if (expression instanceof AArithmeticOperationExpression) {
+            return getLine(((AArithmeticOperationExpression) expression).getL());
         } else if (expression instanceof APlusExpression) {
             return getLine(((APlusExpression) expression).getL());
         }
@@ -245,14 +237,8 @@ inAFuncCall
             } else {
                 return variables.get(variableName).getType();
             }
-        } else if (expression instanceof APowerExpression) {
-            type = getArithmeticType((APowerExpression) expression, line);
-        } else if (expression instanceof AModExpression) {
-            type = getArithmeticType((AModExpression) expression, line);
-        } else if (expression instanceof AMultiplicationExpression) {
-            type = getArithmeticType((AMultiplicationExpression) expression, line);
-        } else if (expression instanceof AMinusExpression) {
-            type = getArithmeticType((AMinusExpression) expression, line);
+        } else if (expression instanceof AArithmeticOperationExpression) {
+            type = getArithmeticType((AArithmeticOperationExpression) expression, line);
         } else if (expression instanceof APlusExpression) {
             PExpression left = ((APlusExpression) expression).getL();
             PExpression right = ((APlusExpression) expression).getR();
@@ -306,7 +292,7 @@ inAFuncCall
         return type;
 }
 
-    private String getArithmeticType(ArithmeticOperation node, int line) {
+    private String getArithmeticType(AArithmeticOperationExpression node, int line) {
         PExpression left = node.getL();
         PExpression right = node.getR();
         String typeLeft = getExpressionType(left, line);

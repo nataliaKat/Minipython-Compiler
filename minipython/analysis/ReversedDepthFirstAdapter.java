@@ -334,19 +334,19 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAAssignEqStatement(node);
     }
 
-    public void inAAssignMineqStatement(AAssignMineqStatement node)
+    public void inAAssignEqOperationStatement(AAssignEqOperationStatement node)
     {
         defaultIn(node);
     }
 
-    public void outAAssignMineqStatement(AAssignMineqStatement node)
+    public void outAAssignEqOperationStatement(AAssignEqOperationStatement node)
     {
         defaultOut(node);
     }
 
-    public void caseAAssignMineqStatement(AAssignMineqStatement node)
+    public void caseAAssignEqOperationStatement(AAssignEqOperationStatement node)
     {
-        inAAssignMineqStatement(node);
+        inAAssignEqOperationStatement(node);
         if(node.getExpression() != null)
         {
             node.getExpression().apply(this);
@@ -355,31 +355,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getId().apply(this);
         }
-        outAAssignMineqStatement(node);
-    }
-
-    public void inAAssignDiveqStatement(AAssignDiveqStatement node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAAssignDiveqStatement(AAssignDiveqStatement node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAAssignDiveqStatement(AAssignDiveqStatement node)
-    {
-        inAAssignDiveqStatement(node);
-        if(node.getExpression() != null)
-        {
-            node.getExpression().apply(this);
-        }
-        if(node.getId() != null)
-        {
-            node.getId().apply(this);
-        }
-        outAAssignDiveqStatement(node);
+        outAAssignEqOperationStatement(node);
     }
 
     public void inAArrayAssignStatement(AArrayAssignStatement node)
@@ -501,19 +477,19 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAPlusExpression(node);
     }
 
-    public void inAMinusExpression(AMinusExpression node)
+    public void inAArithmeticOperationExpression(AArithmeticOperationExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAMinusExpression(AMinusExpression node)
+    public void outAArithmeticOperationExpression(AArithmeticOperationExpression node)
     {
         defaultOut(node);
     }
 
-    public void caseAMinusExpression(AMinusExpression node)
+    public void caseAArithmeticOperationExpression(AArithmeticOperationExpression node)
     {
-        inAMinusExpression(node);
+        inAArithmeticOperationExpression(node);
         if(node.getR() != null)
         {
             node.getR().apply(this);
@@ -522,103 +498,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getL().apply(this);
         }
-        outAMinusExpression(node);
-    }
-
-    public void inAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        inAMultiplicationExpression(node);
-        if(node.getR() != null)
-        {
-            node.getR().apply(this);
-        }
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        outAMultiplicationExpression(node);
-    }
-
-    public void inADivisionExpression(ADivisionExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outADivisionExpression(ADivisionExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseADivisionExpression(ADivisionExpression node)
-    {
-        inADivisionExpression(node);
-        if(node.getR() != null)
-        {
-            node.getR().apply(this);
-        }
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        outADivisionExpression(node);
-    }
-
-    public void inAModExpression(AModExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAModExpression(AModExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAModExpression(AModExpression node)
-    {
-        inAModExpression(node);
-        if(node.getR() != null)
-        {
-            node.getR().apply(this);
-        }
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        outAModExpression(node);
-    }
-
-    public void inAPowerExpression(APowerExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAPowerExpression(APowerExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAPowerExpression(APowerExpression node)
-    {
-        inAPowerExpression(node);
-        if(node.getR() != null)
-        {
-            node.getR().apply(this);
-        }
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        outAPowerExpression(node);
+        outAArithmeticOperationExpression(node);
     }
 
     public void inAValExpression(AValExpression node)

@@ -1882,7 +1882,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pstatementNode1 = new AAssignMineqStatement(tidNode2, pexpressionNode3);
+        pstatementNode1 = new AAssignEqOperationStatement(tidNode2, pexpressionNode3);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -1905,7 +1905,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList2.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList4.get(0);
 
-        pstatementNode1 = new AAssignMineqStatement(tidNode2, pexpressionNode3);
+        pstatementNode1 = new AAssignEqOperationStatement(tidNode2, pexpressionNode3);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -1927,7 +1927,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pstatementNode1 = new AAssignDiveqStatement(tidNode2, pexpressionNode3);
+        pstatementNode1 = new AAssignEqOperationStatement(tidNode2, pexpressionNode3);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -1950,7 +1950,7 @@ public class Parser
         tidNode2 = (TId)nodeArrayList2.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList4.get(0);
 
-        pstatementNode1 = new AAssignDiveqStatement(tidNode2, pexpressionNode3);
+        pstatementNode1 = new AAssignEqOperationStatement(tidNode2, pexpressionNode3);
         }
 	nodeList.add(pstatementNode1);
         return nodeList;
@@ -2221,7 +2221,7 @@ public class Parser
         pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AMinusExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AArithmeticOperationExpression(pexpressionNode2, pexpressionNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2256,7 +2256,7 @@ public class Parser
         pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AMultiplicationExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AArithmeticOperationExpression(pexpressionNode2, pexpressionNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2278,7 +2278,7 @@ public class Parser
         pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new ADivisionExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AArithmeticOperationExpression(pexpressionNode2, pexpressionNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2300,7 +2300,7 @@ public class Parser
         pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new AModExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AArithmeticOperationExpression(pexpressionNode2, pexpressionNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2335,7 +2335,7 @@ public class Parser
         pexpressionNode2 = (PExpression)nodeArrayList1.get(0);
         pexpressionNode3 = (PExpression)nodeArrayList3.get(0);
 
-        pexpressionNode1 = new APowerExpression(pexpressionNode2, pexpressionNode3);
+        pexpressionNode1 = new AArithmeticOperationExpression(pexpressionNode2, pexpressionNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
