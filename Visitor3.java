@@ -200,9 +200,10 @@ public class Visitor3 extends DepthFirstAdapter {
                     variables.put(argName, new Variable(argName, arguments[i].getType(), line));
                 }
             }
+            PExpression returnExpression = getReturnExpression(f.getStatement());
+            return getExpressionType(returnExpression, line);
         }
-        PExpression returnExpression = getReturnExpression(f.getStatement());
-        return getExpressionType(returnExpression, line);
+        return null;
     }
 
     private String getArithmeticType(AArithmeticOperationExpression node, int line) {
