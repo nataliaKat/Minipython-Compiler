@@ -55,6 +55,12 @@ public class Visitor3 extends DepthFirstAdapter {
         }
     }
 
+    @Override
+    public void inAFuncCallStatement(AFuncCallStatement node) {
+        AFuncCall functionCall = (AFuncCall) node.getFuncCall();
+        String type = getFunctionCallType(functionCall);
+    }
+
     private int getLine(PExpression expression) {
         if (expression instanceof AValExpression) {
             return getValueLine(((AValExpression) expression).getValue());
@@ -156,29 +162,32 @@ public class Visitor3 extends DepthFirstAdapter {
                 type = null;
             }
         } else if (expression instanceof AFunctionExpression) {
-            String function_name = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getId().getText();
-            int numOfArgs = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getExpression().size();
-            Function f = Utils.getFunction(functions, function_name, numOfArgs);
-            if (f != null) {
-                Variable[] arguments = f.getParameters();
-                AArgument argument;
-                List<PExpression> argExpressions = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getExpression();
-                for (int i = 0; i < f.getNumOfAllParameters(); i++) {
-                    String argName = arguments[i].getName();
-                    if (i < numOfArgs) {
-                        String argTypeFromFCall = getExpressionType(argExpressions.get(i), line);
-                        variables.put(argName, new Variable(argName, argTypeFromFCall, line));
-                    } else {
-                        variables.put(argName, new Variable(argName, arguments[i].getType(), line));
-                    }
-                }
-            }
-            PExpression returnExpression = getReturnExpression(f.getStatement());
-            if (returnExpression != null)
-                type = getExpressionType(returnExpression, line);
+            type = getFunctionCallType((AFuncCall) ((AFunctionExpression) expression).getFuncCall());
         }
         return type;
 }
+
+    private String getFunctionCallType(AFuncCall functionCall) {
+        String function_name = functionCall.getId().getText();
+        int line = functionCall.getId().getLine();
+        int numOfArgs = functionCall.getExpression().size();
+        Function f = Utils.getFunction(functions, function_name, numOfArgs);
+        if (f != null) {
+            Variable[] arguments = f.getParameters();
+            List<PExpression> argExpressions = functionCall.getExpression();
+            for (int i = 0; i < f.getNumOfAllParameters(); i++) {
+                String argName = arguments[i].getName();
+                if (i < numOfArgs) {
+                    String argTypeFromFCall = getExpressionType(argExpressions.get(i), line);
+                    variables.put(argName, new Variable(argName, argTypeFromFCall, line));
+                } else {
+                    variables.put(argName, new Variable(argName, arguments[i].getType(), line));
+                }
+            }
+        }
+        PExpression returnExpression = getReturnExpression(f.getStatement());
+        return getExpressionType(returnExpression, line);
+    }
 
     private String getArithmeticType(AArithmeticOperationExpression node, int line) {
         PExpression left = node.getL();
