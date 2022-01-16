@@ -1,128 +1,46 @@
-print max(x.fr(test), 5)
-print max(x.t(), 2)
-print 7 ** t()
+#Q1
+def add(x,y):
+   return x + y
+print k
+k =0
+
+#Q2, Q3 We expect Errors in Line 7 and 11 and 13
+ad2(1)
+add2(1)
+def add2(x, y=2):
+    print x + y
+ad2(1, 1)
+add2(1, 1)
+add2(1, 1, 1, 1 ,1)
+
+#Q4
+x="hello world"
+print x+2
+
+def add4(x,y):
+   return x + y
+k="hello world"
+print add4(2,k)
+
+#Q5
+x5 =None + None
+y5= 5 + None
+z5= None + "hi"
 
 
-fr()
- 
-print [4**5,5,2]
-print len([4**5,5,2])
-# print len(6**6)
-# print something[2**7]
-print 8 ** max(3, 8)
+#Q6
+def add(x,y):
+   return "hello world"
+print add(2,1)+2
 
-# print 563.93 / 2 * 3 ** 5
-
-# print 563.93 / testf(2 * 3) ** 5
-
-# print 563.93 ** 2 * 3
-
-# print 563.93 / testf(2 * 3, [y, x, w] ** q) ** 5
-
-# testf(2* 3 ,[y, x, w] ** k)
-
-
-print 563.93 / 2 * 3 ** 5
-
-return 7 + 8 * 9
-return 7 * 8 + 9
-
-
-print x
-
-while true and false:
-    print sth
-
-while x > 2 and y == 8:
-    return 1
-
-# import examples
-import library1
-import library.specific
-import library as l
-import library.specific as l
-import library.specific as x, anotherlibrary.other, other as l1, other1.math as m
-
-from y import x
-from  y import x as w
-from  y import x,b,n
-from  y import x,b as r532,n
-
-# function call examples
-test()
-test(x)
-test(x + 10)
-test(x8, y0, [3, 5, 7])
-test([1, 4, 5])
-test(x.test1(), y[n], b(v))
-test(len(test1()))
-test(max(7,9))
-
-# function examples
-def perfect_function():
-    print _v
-
-def a_function__(x):
-    if x > 8:
-        print 'hi'
-
-# statement examples
-if true :
-    return 2 / 5
-
-
-for Identifier in kk : 
-    x = 78
-
-k[1] = len([5,6])
-
-x -= min(1,3)
-
-df('fg',rte,67)
-
-x /= 7
-
-print "wee areee minipython masters"
-
-litresOfCoffee = 15
-
-while litresOfCoffee>0 :
-    code("compilers assignment")
-    litresOfCoffee -= 1
-
-while 8 >= 9 :
-    x = 78
-
-x -= 1 +1
-
-assert min(x.k(9))
-
-print 1, 'hello', y,s
-
-if x + 6 != 9 and p <= len(9):
-    if x == 98:
-    assert 9
-
-print [len(x), min(7, x.sth())]
-print len([3, 4])
-
-if y > 7 and not x > 8 or y <= 3:
-    print 'something'
-
-if y > 7 or not x > 8 and y <= 3 and not false:
-print _id_
-
-print 'yuteT'
-
-while true and not false:
-    endlessLoop("we are screwed")
-
-
-# def testfunc(a,):
-#     print name, "studies in", university
-# testfunc("kwstas")
-
-def complexfunc(am,k):
-    print courses[0]
-    print grades["compilers"]
-k = complexfunc()
+#Q7 We expect Errors in Line 39, 41, 45
+def add7(x, y, z=0):
+    print 4
+def add7(x,y, z=1):
+    print 4
+def add7(x,y, z):
+     print 4
+def add7(x,y, z, k=0):
+     print 4
+def add7(x,y):
+    print 4

@@ -44,7 +44,7 @@ public class Visitor3 extends DepthFirstAdapter {
     public void inAPrintStatement(APrintStatement node) {
         int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
-        if (typeLeft.equals("none")) {
+        if (typeLeft!= null && typeLeft.equals("none")) {
             System.out.println("Cannot print None, line " + line);
             return;
         }
@@ -52,7 +52,7 @@ public class Visitor3 extends DepthFirstAdapter {
         if (typeLeft != null) {
             for (PExpression expression : expressions) {
                 String typeRight = getExpressionType(expression, line);
-                if (typeRight.equals("none")) {
+                if (typeRight!= null && typeRight.equals("none")) {
                     System.out.println("Cannot print None, line " + line);
                     return;
                 }
@@ -200,9 +200,10 @@ public class Visitor3 extends DepthFirstAdapter {
                     variables.put(argName, new Variable(argName, arguments[i].getType(), line));
                 }
             }
+            PExpression returnExpression = getReturnExpression(f.getStatement());
+            return getExpressionType(returnExpression, line);
         }
-        PExpression returnExpression = getReturnExpression(f.getStatement());
-        return getExpressionType(returnExpression, line);
+        return null;
     }
 
     private String getArithmeticType(AArithmeticOperationExpression node, int line) {
