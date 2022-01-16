@@ -1,7 +1,7 @@
+k = 2
+
 def add(x,y):
     return x + y
-print k
-k = 0
-
-x=None
-print x+None
+# k="Hello World"
+# l = add(2,k)
+# m = add("a",k)

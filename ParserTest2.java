@@ -28,8 +28,26 @@ public class ParserTest2
 //      ast.apply(new SymbolTableFiller(symtable));
       System.out.println("Entering First Visitor:");
       ast.apply(new Visitor1(functions));
+      System.out.println("Functions");
+      System.out.println(functions);
+      System.out.println("Variables");
+      for (Map.Entry<String, Variable> entry: variables.entrySet()) {
+        String key = entry.getKey();
+        Variable value = entry.getValue();
+
+        System.out.println("Key: " + key + " Value: " + value);
+      }
       System.out.println("Entering Second Visitor:");
       ast.apply(new Visitor2(variables, functions));
+      System.out.println("Functions");
+      System.out.println(functions);
+      System.out.println("Variables");
+      for (Map.Entry<String, Variable> entry: variables.entrySet()) {
+        String key = entry.getKey();
+        Variable value = entry.getValue();
+
+        System.out.println("Key: " + key + " Value: " + value);
+      }
       System.out.println("Entering Third Visitor:");
       ast.apply(new Visitor3(variables, functions));
       System.out.println("Functions");
