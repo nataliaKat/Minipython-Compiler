@@ -63,7 +63,7 @@ public class Visitor1 extends DepthFirstAdapter {
                 varType = getValueType((PValue) (argument.getValue().getFirst()));
                 defaultArgsNum++;
             }
-            argumentsArray[0] = new Variable(varName, varType);
+            argumentsArray[0] = new Variable(varName, varType, line);
             int i = 1;
             for (ANotFirstArgument nfarg : nfargs) {
                 varName = nfarg.getId().toString().trim();
@@ -81,7 +81,4 @@ public class Visitor1 extends DepthFirstAdapter {
         Function f = new Function(name, line, defaultArgsNum, numOfAllParams, node.getStatement(), argumentsArray);
         putToFunctions(f);
     }
-
-
-
 }
