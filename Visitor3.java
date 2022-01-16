@@ -14,50 +14,6 @@ public class Visitor3 extends DepthFirstAdapter {
         this.functions = functions;
     }
 
-    /**
-     * Checks if a value is string (Not finished)
-     *
-     * @param node
-     */
-//    @Override
-//    public void inAPlusExpression(APlusExpression node) {
-//        boolean isValueLeft  = node.getL() instanceof AValExpression;
-//        boolean isValueRight  = node.getR() instanceof AValExpression;
-//        if (isValueLeft){
-//            boolean isString = ((AValExpression) node.getL()).getValue() instanceof AStringValue;
-//            if (isString) {
-//                // TODO: Find line in productions
-//                System.out.println("Cannot add string value with number");
-//            }
-//        }
-//        if (isValueRight) {
-//            boolean isString = ((AValExpression) node.getR()).getValue() instanceof AStringValue;
-//            if (isString) {
-//                // TODO: Find line in productions
-//                System.out.println("Cannot add string value with number");
-//            }
-//        }
-//
-//
-//    }
-    @Override
-    public void inAMaxExpression(AMaxExpression node) {
-
-    }
-
-    //    @Override
-//    public void inAPowerExpression(APowerExpression node) {
-//        PExpression left = node.getL();
-//        PExpression right = node.getR();
-//        if (left instanceof AValExpression)
-//        boolean isArithmetic = checkArithmetic((AValExpression)node.getL(), (AValExpression) node.getR());
-//        System.out.println(isArithmetic + " from power");
-//        if (node.getL() instanceof AIdentifierExpression) {
-//            System.out.println(node.getL());
-//        }
-//    }
-
-
     @Override
     public void inAAssignEqStatement(AAssignEqStatement node) {
         String name = node.getId().getText();
@@ -221,18 +177,6 @@ public class Visitor3 extends DepthFirstAdapter {
             if (returnExpression != null)
                 type = getExpressionType(returnExpression, line);
         }
-
-//                    if (f == null) {
-//        System.out.println("Function not found, line: " + line);
-//    }
-//        elssion instanceof AArrayExpression) {
-//     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
-//                return null;
-//            } else if (getExpressionType(((AArrayExpression expression).getExpression(), line).equals("none")) {
-//                System.out.println("Cannot find` NonArray list of Noneline");
-//                return null;
-//            }
-//        }
         return type;
 }
 
