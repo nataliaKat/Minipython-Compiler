@@ -61,7 +61,7 @@ public class Visitor3 extends DepthFirstAdapter {
     @Override
     public void inAAssignEqStatement(AAssignEqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine() / 2 + 1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
         String type = getExpressionType(expression, line);
         variables.put(name, new Variable(name, type, line));
@@ -70,7 +70,7 @@ public class Visitor3 extends DepthFirstAdapter {
     @Override
     public void inAAssignDiveqStatement(AAssignDiveqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine() / 2 + 1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
         storeForArithmeticStatements(expression, line, name);
     }
@@ -78,14 +78,14 @@ public class Visitor3 extends DepthFirstAdapter {
     @Override
     public void inAAssignMineqStatement(AAssignMineqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine() / 2 + 1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
         storeForArithmeticStatements(expression, line, name);
     }
 
     @Override
     public void inAPrintStatement(APrintStatement node) {
-        int line = getLine(node.getL()) / 2 + 1;
+        int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {
@@ -97,7 +97,7 @@ public class Visitor3 extends DepthFirstAdapter {
 
     @Override
     public void inAAssertStatement(AAssertStatement node) {
-        int line = getLine(node.getL()) / 2 + 1;
+        int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {

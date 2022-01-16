@@ -19,7 +19,7 @@ public class Visitor2 extends DepthFirstAdapter {
     @Override
     public void inAIdentifierExpression(AIdentifierExpression node) {
         String variable_name = node.getId().getText();
-        int line = node.getId().getLine() / 2 + 1;
+        int line = node.getId().getLine();
         int pos = node.getId().getPos();
         if (!variables.containsKey(variable_name)) {
             System.out.println("Error variable " + variable_name + ", line: " + line + " pos: "+ pos+ " does not exist");
@@ -29,7 +29,8 @@ public class Visitor2 extends DepthFirstAdapter {
     @Override
     public void inAAssignEqStatement(AAssignEqStatement node) {
         String name = node.getId().getText();
-        variables.put(name, new Variable(name, null));
+        int line = node.getId().getLine();
+        variables.put(name, new Variable(name, null, line));
     }
 
     @Override
@@ -40,10 +41,12 @@ public class Visitor2 extends DepthFirstAdapter {
             argument = arguments.getFirst();
             LinkedList<ANotFirstArgument> nfargs = argument.getNotFirstArgument();
             String varName = argument.getId().toString().trim();
-            variables.put(varName, new Variable(varName, null));
+            int line = argument.getId().getLine();
+            variables.put(varName, new Variable(varName, null, line));
             for (ANotFirstArgument nfarg : nfargs) {
                 varName = nfarg.getId().toString().trim();
-                variables.put(varName, new Variable(varName, null));
+                line = nfarg.getId().getLine();
+                variables.put(varName, new Variable(varName, null, line));
             }
         }
     }
