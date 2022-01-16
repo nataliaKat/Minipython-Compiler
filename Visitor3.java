@@ -26,9 +26,18 @@ public class Visitor3 extends DepthFirstAdapter {
     @Override
     public void inAAssignEqOperationStatement(AAssignEqOperationStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
-        storeForArithmeticStatements(expression, line, name);
+        String id = node.getId().getText();
+        if (variables.containsKey(id)) {
+            if (!variables.get(id).getType().equals("number")) {
+                System.out.println("Non numeric value, line: " + node.getId().getLine() + ", position " +
+                        node.getId().getPos());
+            }
+        } else {
+            System.out.println("Variable " + id + " has not been initialized line: " + node.getId().getLine() + ", position " +
+                    node.getId().getPos());
+        }
+        storeForArithmeticStatements(expression, node.getId().getLine(), name);
     }
 
     @Override
