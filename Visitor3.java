@@ -148,61 +148,6 @@ public class Visitor3 extends DepthFirstAdapter {
         variables.put(name, new Variable(name, type, line));
     }
 
-//    @Override
-//    public void inAAssignEqStatement(AAssignEqStatement node) {
-//        String name = node.getId().getText();
-//        int line = node.getId().getLine();
-//        if(node.getExpression() instanceof AValExpression){
-//            PValue value = ((AValExpression) node.getExpression()).getValue();
-//            if(value instanceof ANoneValue){
-//                // none
-//                variables.put(name,new Variable(name,"None", line));
-//            }
-//            else if(value instanceof ANumberValue){
-//                //number
-//                variables.put(name,new Variable(name,"Number", line));
-//            }
-//            else if(value instanceof AStringValue){
-//                //string
-//                variables.put(name,new Variable(name,"String", line));
-//            }
-//        }
-//        else if(node.getExpression() instanceof AArrayExpression){
-//            variables.put(name,new Variable(name,"Array", line));
-//        }
-//        else if(node.getExpression() instanceof AIdentifierExpression){
-//            variables.put(name,new Variable(name,"Identifier", line));
-//        }
-//        else if(node.getExpression() instanceof AFunctionExpression){
-//            variables.put(name,new Variable(name,"Function Call", line));
-//        }
-//        else if(node.getExpression() instanceof APlusExpression|
-//                node.getExpression() instanceof AMultiplicationExpression|
-//                node.getExpression() instanceof ADivisionExpression|
-//                node.getExpression() instanceof AModExpression|
-//                node.getExpression() instanceof APowerExpression|
-//                node.getExpression() instanceof AMinusExpression|
-//                //TODO minmaxlen ola sxedon
-//                node.getExpression() instanceof AMinExpression|
-//                node.getExpression() instanceof AMaxExpression|
-//                node.getExpression() instanceof ALenExpression){
-//            variables.put(name,new Variable(name,"Number", line));
-//        }
-//        else if(node.getExpression() instanceof ASubscriptionExpression){
-//            variables.put(name,new Variable(name,"Subscription", line));
-//        }
-//        else{
-//            System.out.println("Error " + name);
-//        }
-//    }
-
-/*
-inAFuncCall
-περνουμε απο ταβλε το φθντιον μετα βαζουμε τιμες στα αρισματα στο ταβλε με τις μεταβλητες
-ψαχνουμε για ρετθρν και αμα δεν εχει επιστρεφει Νονε αλλιως επιστρεφει τυπο
-*/
-
-
     private String getExpressionType(PExpression expression, int line) {
         String type = null;
         if (expression instanceof AValExpression) {
@@ -343,10 +288,5 @@ inAFuncCall
         if (pValue instanceof AStringValue) return "string";
         else if (pValue instanceof ANumberValue) return "number";
         else return "none";
-    }
-
-    @Override
-    public void inAPlusExpression(APlusExpression node) {
-
     }
 }
