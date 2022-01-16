@@ -1,7 +1,9 @@
 import minipython.analysis.DepthFirstAdapter;
 import minipython.node.*;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Visitor3 extends DepthFirstAdapter {
     private Hashtable<String, Variable> variables;
@@ -11,10 +13,10 @@ public class Visitor3 extends DepthFirstAdapter {
         this.variables = variables;
         this.functions = functions;
     }
-    private static final ArrayList<String> ACCEPTED_TYPES =  new ArrayList<>(Arrays.asList("String", "Number", "Array", "None"));
 
     /**
      * Checks if a value is string (Not finished)
+     *
      * @param node
      */
 //    @Override
@@ -38,7 +40,6 @@ public class Visitor3 extends DepthFirstAdapter {
 //
 //
 //    }
-
     @Override
     public void inAMaxExpression(AMaxExpression node) {
 
@@ -57,23 +58,19 @@ public class Visitor3 extends DepthFirstAdapter {
 //    }
 
 
-
-
     @Override
     public void inAAssignEqStatement(AAssignEqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine()/2 +1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
-
         String type = getExpressionType(expression, line);
-        Variable newVar = new Variable(name, type, line);
-        if (type != null) variables.put(name, newVar);
+        variables.put(name, new Variable(name, type, line));
     }
 
     @Override
     public void inAAssignDiveqStatement(AAssignDiveqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine()/2 +1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
         storeForArithmeticStatements(expression, line, name);
     }
@@ -81,26 +78,26 @@ public class Visitor3 extends DepthFirstAdapter {
     @Override
     public void inAAssignMineqStatement(AAssignMineqStatement node) {
         String name = node.getId().getText();
-        int line = node.getId().getLine()/2 +1;
+        int line = node.getId().getLine();
         PExpression expression = node.getExpression();
         storeForArithmeticStatements(expression, line, name);
     }
 
     @Override
     public void inAPrintStatement(APrintStatement node) {
-        int line = getLine(node.getL()) / 2 + 1;
+        int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {
             for (PExpression expression : expressions) {
-                String typeRight = getExpressionType(expression, line);
+                getExpressionType(expression, line);
             }
         }
     }
 
     @Override
     public void inAAssertStatement(AAssertStatement node) {
-        int line = getLine(node.getL()) / 2 + 1;
+        int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {
@@ -129,7 +126,7 @@ public class Visitor3 extends DepthFirstAdapter {
         } else if (expression instanceof AArrayExpression) {
             return getLine(((AArrayExpression) expression).getL());
         } else if (expression instanceof ArithmeticOperation) {
-            return  getLine(((ArithmeticOperation) expression).getL());
+            return getLine(((ArithmeticOperation) expression).getL());
         } else if (expression instanceof APlusExpression) {
             return getLine(((APlusExpression) expression).getL());
         }
@@ -137,7 +134,7 @@ public class Visitor3 extends DepthFirstAdapter {
     }
 
     private int getValueLine(PValue pValue) {
-        if (pValue instanceof AStringValue)  {
+        if (pValue instanceof AStringValue) {
             return ((AStringValue) pValue).getStringLiteral().getLine();
         } else if (pValue instanceof ANumberValue) {
             return ((ANumberValue) pValue).getNumber().getLine();
@@ -150,15 +147,13 @@ public class Visitor3 extends DepthFirstAdapter {
     }
 
 
-
     private void storeForArithmeticStatements(PExpression expression, int line, String name) {
         String type = getExpressionType(expression, line);
         if (!type.equals("number")) {
             System.out.println("Non numeric expression, line: " + line);
             return;
         }
-        Variable newVar = new Variable(name, type, line);
-        if (type != null) variables.put(name, newVar);
+        variables.put(name, new Variable(name, type, line));
     }
 
 //    @Override
@@ -216,9 +211,6 @@ inAFuncCall
 */
 
 
-
-
-
     private String getExpressionType(PExpression expression, int line) {
         String type = null;
         if (expression instanceof AValExpression) {
@@ -253,14 +245,6 @@ inAFuncCall
             } else {
                 return variables.get(variableName).getType();
             }
-        } else if (expression instanceof AFunctionExpression) {
-            PFuncCall pFuncCall = ((AFunctionExpression) expression).getFuncCall();
-            String name = ((AFuncCall) pFuncCall).getId().toString().trim();
-            int numOfArgs = ((AFuncCall) pFuncCall).getExpression().size();
-            Function f = Utils.getFunction(functions, name, numOfArgs);
-            if (f == null) {
-                System.out.println("Function not found, line: " + line);
-            }
         } else if (expression instanceof APowerExpression) {
             type = getArithmeticType((APowerExpression) expression, line);
         } else if (expression instanceof AModExpression) {
@@ -286,16 +270,31 @@ inAFuncCall
                 type = null;
             }
         } else if (expression instanceof AFunctionExpression) {
-            String function_name = ((AFuncCall)((AFunctionExpression)expression).getFuncCall()).getId().getText();
-            int numOfArgs = ((AFuncCall)((AFunctionExpression)expression).getFuncCall()).getExpression().size();
-            if (functions.containsKey(function_name)) {
-                Function f = Utils.getFunction(functions, function_name, numOfArgs);
-                if (f != null) {
-                    Variable[] arguments = f.getParameters();
-                    AArgument arg;
+            String function_name = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getId().getText();
+            int numOfArgs = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getExpression().size();
+            Function f = Utils.getFunction(functions, function_name, numOfArgs);
+            if (f != null) {
+                Variable[] arguments = f.getParameters();
+                AArgument argument;
+                List<PExpression> argExpressions = ((AFuncCall) ((AFunctionExpression) expression).getFuncCall()).getExpression();
+                for (int i = 0; i < f.getNumOfAllParameters(); i++) {
+                    String argName = arguments[i].getName();
+                    if (i < numOfArgs) {
+                        String argTypeFromFCall = getExpressionType(argExpressions.get(i), line);
+                        variables.put(argName, new Variable(argName, argTypeFromFCall, line));
+                    } else {
+                        variables.put(argName, new Variable(argName, arguments[i].getType(), line));
+                    }
                 }
             }
+            PExpression returnExpression = getReturnExpression(f.getStatement());
+            if (returnExpression != null)
+                type = getExpressionType(returnExpression, line);
         }
+
+//                    if (f == null) {
+//        System.out.println("Function not found, line: " + line);
+//    }
 //        elssion instanceof AArrayExpression) {
 //     etExpressionType(((AArrayExpression) expression).getExpression(), line) == null) {
 //                return null;
@@ -305,7 +304,7 @@ inAFuncCall
 //            }
 //        }
         return type;
-    }
+}
 
     private String getArithmeticType(ArithmeticOperation node, int line) {
         PExpression left = node.getL();
@@ -322,7 +321,7 @@ inAFuncCall
 
     private PExpression getReturnExpression(PStatement pStatement) {
         if (pStatement instanceof AReturnStatement) {
-            return  ((AReturnStatement) pStatement).getExpression();
+            return ((AReturnStatement) pStatement).getExpression();
         } else if (pStatement instanceof AConditionStatement) {
             return getReturnExpression(((AConditionStatement) pStatement).getStatement());
         } else if (pStatement instanceof ALoopWhileStatement) {
@@ -361,8 +360,7 @@ inAFuncCall
     }
 
     @Override
-    public void inAPlusExpression(APlusExpression node)
-    {
+    public void inAPlusExpression(APlusExpression node) {
 
     }
 }

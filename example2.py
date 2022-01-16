@@ -62,6 +62,14 @@ def q7(x,y, z, k=0):
 def q7(x,y):
     print 4
 
+yywe = 2**"test"
+
+gtuf = "32" * 10
+
+def test(x):
+    y = x + 8
+
+test(1)
 
 # y = x
 #

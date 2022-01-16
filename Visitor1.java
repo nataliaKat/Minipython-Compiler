@@ -1,7 +1,6 @@
 import minipython.analysis.DepthFirstAdapter;
 import minipython.node.*;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
