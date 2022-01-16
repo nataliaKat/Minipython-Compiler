@@ -49,7 +49,6 @@ public class Visitor1 extends DepthFirstAdapter {
     public void inAFunction(AFunction node) {
         String name = node.getId().toString().trim();
         int line = node.getId().getLine();
-        System.out.println("Line in f: " + line);
         LinkedList<AArgument> arguments = node.getArgument(); //size = 0 or 1
         AArgument argument;
         Variable[] argumentsArray = null;
