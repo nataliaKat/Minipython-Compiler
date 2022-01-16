@@ -44,10 +44,18 @@ public class Visitor3 extends DepthFirstAdapter {
     public void inAPrintStatement(APrintStatement node) {
         int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
+        if (typeLeft.equals("none")) {
+            System.out.println("Cannot print None, line " + line);
+            return;
+        }
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {
             for (PExpression expression : expressions) {
-                getExpressionType(expression, line);
+                String typeRight = getExpressionType(expression, line);
+                if (typeRight.equals("none")) {
+                    System.out.println("Cannot print None, line " + line);
+                    return;
+                }
             }
         }
     }
@@ -56,10 +64,18 @@ public class Visitor3 extends DepthFirstAdapter {
     public void inAAssertStatement(AAssertStatement node) {
         int line = getLine(node.getL());
         String typeLeft = getExpressionType(node.getL(), line);
+        if (typeLeft.equals("none")) {
+            System.out.println("Cannot assert for None, line " + line);
+            return;
+        }
         LinkedList<PExpression> expressions = node.getR();
         if (typeLeft != null) {
             for (PExpression expression : expressions) {
-                getExpressionType(expression, line);
+                String typeRight = getExpressionType(expression, line);
+                if (typeRight.equals("none")) {
+                    System.out.println("Cannot assert for None, line " + line);
+                    return;
+                }
             }
         }
     }
