@@ -58,10 +58,8 @@ public class Visitor3 extends DepthFirstAdapter {
     private int getLine(PExpression expression) {
         if (expression instanceof AValExpression) {
             return getValueLine(((AValExpression) expression).getValue());
-        } else if (expression instanceof AMinExpression) {
-            return getValueLine(((AMinExpression) expression).getL());
-        } else if (expression instanceof AMaxExpression) {
-            return getValueLine(((AMaxExpression) expression).getL());
+        } else if (expression instanceof AMinMaxExpression) {
+            return getValueLine(((AMinMaxExpression) expression).getL());
         } else if (expression instanceof ALenExpression) {
             return getLine(((ALenExpression) expression).getExpression());
         } else if (expression instanceof ASubscriptionExpression) {
@@ -109,7 +107,6 @@ public class Visitor3 extends DepthFirstAdapter {
         if (expression instanceof AValExpression) {
             type = getValueType(((AValExpression) expression).getValue());
         } else if (expression instanceof ALenExpression) {
-            // If expression is None,
             if (getExpressionType(((ALenExpression) expression).getExpression(), line) == null) {
                 return null;
             } else if (getExpressionType(((ALenExpression) expression).getExpression(), line).equals("none")) {
@@ -118,16 +115,10 @@ public class Visitor3 extends DepthFirstAdapter {
                 return null;
             }
             type = "number";
-        } else if (expression instanceof AMaxExpression) {
-            type = getMaxType((AMaxExpression) expression);
+        } else if (expression instanceof AMinMaxExpression) {
+            type = getMinMaxType((AMinMaxExpression) expression);
             if (type == null) {
-                System.out.println("Error in max, line: " + line);
-                return null;
-            }
-        } else if (expression instanceof AMinExpression) {
-            type = getMinType((AMinExpression) expression);
-            if (type == null) {
-                System.out.println("Error in min, line: " + line);
+                System.out.println("Error in min / max, line: " + line);
                 return null;
             }
         } else if (expression instanceof AIdentifierExpression) {
@@ -207,20 +198,10 @@ public class Visitor3 extends DepthFirstAdapter {
     }
 
 
-    private String getMaxType(AMaxExpression aMaxExpression) {
-        String type = getValueType(aMaxExpression.getL());
+    private String getMinMaxType(AMinMaxExpression aMinMaxExpression) {
+        String type = getValueType(aMinMaxExpression.getL());
         if (type.equals("none")) return null;
-        List<PValue> values = aMaxExpression.getR();
-        for (PValue v : values) {
-            if (!getValueType(v).equals(type)) return null;
-        }
-        return type;
-    }
-
-    private String getMinType(AMinExpression aMinExpression) {
-        String type = getValueType(aMinExpression.getL());
-        if (type.equals("none")) return null;
-        List<PValue> values = aMinExpression.getR();
+        List<PValue> values = aMinMaxExpression.getR();
         for (PValue v : values) {
             if (!getValueType(v).equals(type)) return null;
         }

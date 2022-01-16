@@ -5,16 +5,16 @@ package minipython.node;
 import java.util.*;
 import minipython.analysis.*;
 
-public final class AMinExpression extends PExpression
+public final class AMinMaxExpression extends PExpression
 {
     private PValue _l_;
     private final LinkedList _r_ = new TypedLinkedList(new R_Cast());
 
-    public AMinExpression()
+    public AMinMaxExpression()
     {
     }
 
-    public AMinExpression(
+    public AMinMaxExpression(
         PValue _l_,
         List _r_)
     {
@@ -28,14 +28,14 @@ public final class AMinExpression extends PExpression
     }
     public Object clone()
     {
-        return new AMinExpression(
+        return new AMinMaxExpression(
             (PValue) cloneNode(_l_),
             cloneList(_r_));
     }
 
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAMinExpression(this);
+        ((Analysis) sw).caseAMinMaxExpression(this);
     }
 
     public PValue getL()
@@ -130,15 +130,15 @@ public final class AMinExpression extends PExpression
             PValue node = (PValue) o;
 
             if((node.parent() != null) &&
-                (node.parent() != AMinExpression.this))
+                (node.parent() != AMinMaxExpression.this))
             {
                 node.parent().removeChild(node);
             }
 
             if((node.parent() == null) ||
-                (node.parent() != AMinExpression.this))
+                (node.parent() != AMinMaxExpression.this))
             {
-                node.parent(AMinExpression.this);
+                node.parent(AMinMaxExpression.this);
             }
 
             return node;

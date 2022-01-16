@@ -173,12 +173,7 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAMaxExpression(AMaxExpression node)
-    {
-        defaultCase(node);
-    }
-
-    public void caseAMinExpression(AMinExpression node)
+    public void caseAMinMaxExpression(AMinMaxExpression node)
     {
         defaultCase(node);
     }
