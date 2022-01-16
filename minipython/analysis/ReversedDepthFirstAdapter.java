@@ -541,19 +541,19 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAIdentifierExpression(node);
     }
 
-    public void inAMaxExpression(AMaxExpression node)
+    public void inAMinMaxExpression(AMinMaxExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAMaxExpression(AMaxExpression node)
+    public void outAMinMaxExpression(AMinMaxExpression node)
     {
         defaultOut(node);
     }
 
-    public void caseAMaxExpression(AMaxExpression node)
+    public void caseAMinMaxExpression(AMinMaxExpression node)
     {
-        inAMaxExpression(node);
+        inAMinMaxExpression(node);
         {
             Object temp[] = node.getR().toArray();
             for(int i = temp.length - 1; i >= 0; i--)
@@ -565,34 +565,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getL().apply(this);
         }
-        outAMaxExpression(node);
-    }
-
-    public void inAMinExpression(AMinExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAMinExpression(AMinExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAMinExpression(AMinExpression node)
-    {
-        inAMinExpression(node);
-        {
-            Object temp[] = node.getR().toArray();
-            for(int i = temp.length - 1; i >= 0; i--)
-            {
-                ((PValue) temp[i]).apply(this);
-            }
-        }
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        outAMinExpression(node);
+        outAMinMaxExpression(node);
     }
 
     public void inALenExpression(ALenExpression node)

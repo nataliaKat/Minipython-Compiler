@@ -33,8 +33,7 @@ public interface Analysis extends Switch
     void caseAArithmeticOperationExpression(AArithmeticOperationExpression node);
     void caseAValExpression(AValExpression node);
     void caseAIdentifierExpression(AIdentifierExpression node);
-    void caseAMaxExpression(AMaxExpression node);
-    void caseAMinExpression(AMinExpression node);
+    void caseAMinMaxExpression(AMinMaxExpression node);
     void caseALenExpression(ALenExpression node);
     void caseAFunctionExpression(AFunctionExpression node);
     void caseASubscriptionExpression(ASubscriptionExpression node);

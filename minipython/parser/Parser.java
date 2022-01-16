@@ -2395,7 +2395,7 @@ public class Parser
         {
         }
 
-        pexpressionNode1 = new AMaxExpression(pvalueNode2, listNode3);
+        pexpressionNode1 = new AMinMaxExpression(pvalueNode2, listNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2426,7 +2426,7 @@ public class Parser
 	}
         }
 
-        pexpressionNode1 = new AMaxExpression(pvalueNode2, listNode4);
+        pexpressionNode1 = new AMinMaxExpression(pvalueNode2, listNode4);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2450,7 +2450,7 @@ public class Parser
         {
         }
 
-        pexpressionNode1 = new AMinExpression(pvalueNode2, listNode3);
+        pexpressionNode1 = new AMinMaxExpression(pvalueNode2, listNode3);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;
@@ -2481,7 +2481,7 @@ public class Parser
 	}
         }
 
-        pexpressionNode1 = new AMinExpression(pvalueNode2, listNode4);
+        pexpressionNode1 = new AMinMaxExpression(pvalueNode2, listNode4);
         }
 	nodeList.add(pexpressionNode1);
         return nodeList;

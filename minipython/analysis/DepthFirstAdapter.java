@@ -542,19 +542,19 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAIdentifierExpression(node);
     }
 
-    public void inAMaxExpression(AMaxExpression node)
+    public void inAMinMaxExpression(AMinMaxExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAMaxExpression(AMaxExpression node)
+    public void outAMinMaxExpression(AMinMaxExpression node)
     {
         defaultOut(node);
     }
 
-    public void caseAMaxExpression(AMaxExpression node)
+    public void caseAMinMaxExpression(AMinMaxExpression node)
     {
-        inAMaxExpression(node);
+        inAMinMaxExpression(node);
         if(node.getL() != null)
         {
             node.getL().apply(this);
@@ -566,34 +566,7 @@ public class DepthFirstAdapter extends AnalysisAdapter
                 ((PValue) temp[i]).apply(this);
             }
         }
-        outAMaxExpression(node);
-    }
-
-    public void inAMinExpression(AMinExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAMinExpression(AMinExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAMinExpression(AMinExpression node)
-    {
-        inAMinExpression(node);
-        if(node.getL() != null)
-        {
-            node.getL().apply(this);
-        }
-        {
-            Object temp[] = node.getR().toArray();
-            for(int i = 0; i < temp.length; i++)
-            {
-                ((PValue) temp[i]).apply(this);
-            }
-        }
-        outAMinExpression(node);
+        outAMinMaxExpression(node);
     }
 
     public void inALenExpression(ALenExpression node)

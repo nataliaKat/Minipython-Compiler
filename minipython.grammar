@@ -116,8 +116,8 @@ Productions
 
 	first_level{->expression} = {val} value {-> New expression.val(value)}|
 				{identifier} id{-> New expression.identifier(id)}|
-				{max} max l_par value not_first_value* r_par {-> New expression.max(value, [not_first_value.value])}|
-				{min} min l_par value not_first_value* r_par {-> New expression.min(value,[not_first_value.value])}|
+				{max} max l_par value not_first_value* r_par {-> New expression.min_max(value, [not_first_value.value])}|
+				{min} min l_par value not_first_value* r_par {-> New expression.min_max(value,[not_first_value.value])}|
 				{len} len l_par expression r_par {-> New expression.len(expression)}|
 				{function} func_call {-> New expression.function(func_call)}|
 				{subscription} id l_br expression r_br {-> New expression.subscription(id, expression)}|
@@ -195,8 +195,7 @@ Abstract Syntax Tree
 				{arithmetic_operation} [l]:expression [r]:expression |
 				{val} value |
                 {identifier} id |
-				{max} [l]:value [r]:value* |
-				{min} [l]:value [r]:value* |
+				{min_max} [l]:value [r]:value* |
 				{len} expression |
 				{function} func_call |
 				{subscription} id expression |
